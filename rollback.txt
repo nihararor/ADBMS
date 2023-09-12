@@ -1,0 +1,90 @@
+Enter password: *********
+Welcome to the MySQL monitor.  Commands end with ; or \g.
+Your MySQL connection id is 15
+Server version: 8.0.31 MySQL Community Server - GPL
+
+Copyright (c) 2000, 2022, Oracle and/or its affiliates.
+
+Oracle is a registered trademark of Oracle Corporation and/or its
+affiliates. Other names may be trademarks of their respective
+owners.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+mysql> create table Worker(
+    -> WORKER_ID INT PRIMARY KEY,
+    -> FIRST_NAME Varchar(50) NOT NULL,
+    -> LAST_NAME Varchar(50) NOT NULL,
+    -> SALARY Int NOT NULL,
+    -> JOINING_DATE DATETIME NOT NULL,
+    -> DEPARTMENT Varchar(50) NOT NULL);
+Query OK, 0 rows affected (0.02 sec)
+
+mysql> START TRANSACTION;
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> INSERT INTO Worker (WORKER_ID, FIRST_NAME, LAST_NAME, SALARY, JOINING_DATE, DEPARTMENT)VALUES(001, 'Monika', 'Arora', 100000, '2014-02-20 09:00:00', 'HR'),  (002, 'Niharika', 'Verma', 80000, '2014-06-11 09:00:00', 'Admin'),  (003, 'Vishal', 'Singhal', 300000, '2014-02-20 09:00:00', 'HR'),  (004, 'Amitabh', 'Singh', 500000, '2014-02-20 09:00:00', 'Admin'),  (005, 'Vivek', 'Bhati', 500000, '2014-06-11 09:00:00', 'Admin'),  (006, 'Diwan', 'Vipul', 200000, '2014-06-11 09:00:00', 'Account');
+Query OK, 6 rows affected (0.00 sec)
+Records: 6  Duplicates: 0  Warnings: 0
+
+mysql> SAVEPOINT savepoint1;
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> INSERT INTO Worker (WORKER_ID, FIRST_NAME, LAST_NAME, SALARY, JOINING_DATE, DEPARTMENT)VALUES(007, 'Kumar', 'Satish', 75000, '2014-01-20 09:00:00', 'Account'),  (008, 'Geetika', 'Chauhan', 90000, '2014-04-11 09:00:00', 'Admin');
+Query OK, 2 rows affected (0.00 sec)
+Records: 2  Duplicates: 0  Warnings: 0
+
+mysql> SAVEPOINT savepoint2;
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> INSERT INTO Worker (WORKER_ID, FIRST_NAME, LAST_NAME, SALARY, JOINING_DATE, DEPARTMENT)VALUES(009,'Nihar', 'Arora', 100000, '2014-04-13 09:00:00', 'HR');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> SAVEPOINT savepoint3;
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> ROLLBACK TO savepoint1;
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> select * from Worker;
++-----------+------------+-----------+--------+---------------------+------------+
+| WORKER_ID | FIRST_NAME | LAST_NAME | SALARY | JOINING_DATE        | DEPARTMENT |
++-----------+------------+-----------+--------+---------------------+------------+
+|         1 | Monika     | Arora     | 100000 | 2014-02-20 09:00:00 | HR         |
+|         2 | Niharika   | Verma     |  80000 | 2014-06-11 09:00:00 | Admin      |
+|         3 | Vishal     | Singhal   | 300000 | 2014-02-20 09:00:00 | HR         |
+|         4 | Amitabh    | Singh     | 500000 | 2014-02-20 09:00:00 | Admin      |
+|         5 | Vivek      | Bhati     | 500000 | 2014-06-11 09:00:00 | Admin      |
+|         6 | Diwan      | Vipul     | 200000 | 2014-06-11 09:00:00 | Account    |
++-----------+------------+-----------+--------+---------------------+------------+
+6 rows in set (0.00 sec)
+
+mysql> ROLLBACK TO savepoint2;
+ERROR 1305 (42000): SAVEPOINT savepoint2 does not exist
+mysql> ROLLBACK TO savepoint2;
+ERROR 1305 (42000): SAVEPOINT savepoint2 does not exist
+mysql> ROLLBACK TO savepoint3;
+ERROR 1305 (42000): SAVEPOINT savepoint3 does not exist
+mysql> ROLLBACK;
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> select * from Worker;
+Empty set (0.00 sec)
+
+mysql> SAVEPOINT savepoint3;
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> select * from Worker;
+Empty set (0.00 sec)
+
+mysql> ROLLBACK TO savepoint1;
+ERROR 1305 (42000): SAVEPOINT savepoint1 does not exist
+mysql> ROLLBACK TO savepoint1;
+ERROR 1305 (42000): SAVEPOINT savepoint1 does not exist
+mysql> ROLLBACK TO SAVEPOINT;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '' at line 1
+mysql> ROLLBACK TO savepoint;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '' at line 1
+mysql> ROLLBACK TO savepoint1;
+ERROR 1305 (42000): SAVEPOINT savepoint1 does not exist
+mysql>

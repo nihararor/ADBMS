@@ -1,0 +1,253 @@
+Enter password: *********
+Welcome to the MySQL monitor.  Commands end with ; or \g.
+Your MySQL connection id is 8
+Server version: 8.0.31 MySQL Community Server - GPL
+
+Copyright (c) 2000, 2022, Oracle and/or its affiliates.
+
+Oracle is a registered trademark of Oracle Corporation and/or its
+affiliates. Other names may be trademarks of their respective
+owners.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+mysql> show databases;
++--------------------+
+| Database           |
++--------------------+
+| information_schema |
+| lab1               |
+| lab2               |
+| lab3               |
+| mysql              |
+| nihar              |
+| performance_schema |
+| sys                |
+| yt                 |
++--------------------+
+9 rows in set (0.21 sec)
+
+mysql> create database lab4;
+Query OK, 1 row affected (0.03 sec)
+
+Database changed
+mysql> CREATE TABLE EMP (    EMPNO INT PRIMARY KEY,    ENAME VARCHAR(10),    JOB VARCHAR(9),    MGR INT,    HIREDATE DATE,    SAL NUMERIC(7,2),    COMM NUMERIC(7,2),    DEPTNO INT);
+Query OK, 0 rows affected (0.02 sec)
+
+mysql> desc EMP;
++----------+--------------+------+-----+---------+-------+
+| Field    | Type         | Null | Key | Default | Extra |
++----------+--------------+------+-----+---------+-------+
+| EMPNO    | int          | NO   | PRI | NULL    |       |
+| ENAME    | varchar(10)  | YES  |     | NULL    |       |
+| JOB      | varchar(9)   | YES  |     | NULL    |       |
+| MGR      | int          | YES  |     | NULL    |       |
+| HIREDATE | date         | YES  |     | NULL    |       |
+| SAL      | decimal(7,2) | YES  |     | NULL    |       |
+| COMM     | decimal(7,2) | YES  |     | NULL    |       |
+| DEPTNO   | int          | YES  |     | NULL    |       |
++----------+--------------+------+-----+---------+-------+
+8 rows in set (0.00 sec)
+
+mysql> CREATE TABLE DEPT (
+    ->   DEPTNO INT(2) PRIMARY KEY,
+    ->   DNAME VARCHAR(14),
+    ->   LOC VARCHAR(13)
+    -> );
+Query OK, 0 rows affected, 1 warning (0.02 sec)
+
+mysql> desc DEPT;
++--------+-------------+------+-----+---------+-------+
+| Field  | Type        | Null | Key | Default | Extra |
++--------+-------------+------+-----+---------+-------+
+| DEPTNO | int         | NO   | PRI | NULL    |       |
+| DNAME  | varchar(14) | YES  |     | NULL    |       |
+| LOC    | varchar(13) | YES  |     | NULL    |       |
++--------+-------------+------+-----+---------+-------+
+3 rows in set (0.04 sec)
+
+mysql> INSERT INTO EMP VALUES
+    -> (7369, 'SMITH', 'CLERK', 7902, TO_DATE('17-DEC-80', 'DD-MON-YY'), 500, 800, 20),
+    -> (7499, 'ALLEN', 'SALESMAN', 7698, TO_DATE('20-FEB-81', 'DD-MON-YY'), 1600, 300, 30),
+    -> (7521, 'WARD', 'SALESMAN', 7698, TO_DATE('22-FEB-81', 'DD-MON-YY'), 1250, 500, 30),
+    -> (7566, 'JONES', 'MANAGER', 7839, TO_DATE('02-APR-81', 'DD-MON-YY'), 2975, NULL, 20),
+    -> (7654, 'MARTIN', 'SALESMAN', 7698, TO_DATE('28-SEP-81', 'DD-MON-YY'), 1250, 1400, 30),
+    -> (7698, 'BLAKE', 'MANAGER', 7839, TO_DATE('01-MAY-81', 'DD-MON-YY'), 2850, NULL, 30);
+ERROR 1305 (42000): FUNCTION lab4.TO_DATE does not exist
+mysql> INSERT INTO EMP VALUES (7369, 'SMITH', 'CLERK', 7902, '1980-12-17', 500, 800, 20);INSERT INTO EMP VALUES (7499, 'ALLEN', 'SALESMAN', 7698, '1981-02-20', 1600, 300, 30);INSERT INTO EMP VALUES (7521, 'WARD', 'SALESMAN', 7698, '1981-02-22', 1250, 500, 30);INSERT INTO EMP VALUES (7566, 'JONES', 'MANAGER', 7839, '1981-04-02', 2975, NULL, 20);INSERT INTO EMP VALUES (7654, 'MARTIN', 'SALESMAN', 7698, '1981-09-28', 1250, 1400, 30);INSERT INTO EMP VALUES (7698, 'BLAKE', 'MANAGER', 7839, '1981-05-01', 2850, NULL, 30);INSERT INTO EMP VALUES (7839, 'KING', 'PRESIDENT', NULL, '1981-11-17', 5000, NULL, 10);INSERT INTO EMP VALUES (7844, 'TURNER', 'SALESMAN', 7698, '1981-09-08', 1500, 0, 30);INSERT INTO EMP VALUES (7876, 'ADAMS', 'CLERK', 7788, '1983-01-12', 1100, NULL, 20);INSERT INTO EMP VALUES (7900, 'JAMES', 'CLERK', 7698, '1981-12-03', 950, NULL, 30);INSERT INTO EMP VALUES (7902, 'FORD', 'ANALYST', 7566, '1981-12-03', 3000, NULL, 20);INSERT INTO EMP VALUES (7934, 'MILLER', 'CLERK', 7782, '1982-01-23', 1300, NULL, 10);
+Query OK, 1 row affected (0.01 sec)
+
+Query OK, 1 row affected (0.00 sec)
+
+Query OK, 1 row affected (0.00 sec)
+
+Query OK, 1 row affected (0.00 sec)
+
+Query OK, 1 row affected (0.00 sec)
+
+Query OK, 1 row affected (0.00 sec)
+
+Query OK, 1 row affected (0.00 sec)
+
+Query OK, 1 row affected (0.00 sec)
+
+Query OK, 1 row affected (0.00 sec)
+
+Query OK, 1 row affected (0.00 sec)
+
+Query OK, 1 row affected (0.00 sec)
+
+Query OK, 1 row affected (0.00 sec)
+
+mysql> select * from EMP;
++-------+--------+-----------+------+------------+---------+---------+--------+
+| EMPNO | ENAME  | JOB       | MGR  | HIREDATE   | SAL     | COMM    | DEPTNO |
++-------+--------+-----------+------+------------+---------+---------+--------+
+|  7369 | SMITH  | CLERK     | 7902 | 1980-12-17 |  500.00 |  800.00 |     20 |
+|  7499 | ALLEN  | SALESMAN  | 7698 | 1981-02-20 | 1600.00 |  300.00 |     30 |
+|  7521 | WARD   | SALESMAN  | 7698 | 1981-02-22 | 1250.00 |  500.00 |     30 |
+|  7566 | JONES  | MANAGER   | 7839 | 1981-04-02 | 2975.00 |    NULL |     20 |
+|  7654 | MARTIN | SALESMAN  | 7698 | 1981-09-28 | 1250.00 | 1400.00 |     30 |
+|  7698 | BLAKE  | MANAGER   | 7839 | 1981-05-01 | 2850.00 |    NULL |     30 |
+|  7839 | KING   | PRESIDENT | NULL | 1981-11-17 | 5000.00 |    NULL |     10 |
+|  7844 | TURNER | SALESMAN  | 7698 | 1981-09-08 | 1500.00 |    0.00 |     30 |
+|  7876 | ADAMS  | CLERK     | 7788 | 1983-01-12 | 1100.00 |    NULL |     20 |
+|  7900 | JAMES  | CLERK     | 7698 | 1981-12-03 |  950.00 |    NULL |     30 |
+|  7902 | FORD   | ANALYST   | 7566 | 1981-12-03 | 3000.00 |    NULL |     20 |
+|  7934 | MILLER | CLERK     | 7782 | 1982-01-23 | 1300.00 |    NULL |     10 |
++-------+--------+-----------+------+------------+---------+---------+--------+
+12 rows in set (0.00 sec)
+
+mysql> INSERT INTO DEPT VALUES(10, 'ACCOUNTING', 'NEW YORK');
+Query OK, 1 row affected (0.00 sec)
+
+mysql>  INSERT INTO DEPT VALUES(20, 'RESEARCH', 'DALLAS');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> INSERT INTO DEPT VALUES(30, 'SALES', 'CHICAGO');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> INSERT INTO DEPT VALUES(40, 'OPERATIONS', 'BOSTON');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> select * from DEPT;
++--------+------------+----------+
+| DEPTNO | DNAME      | LOC      |
++--------+------------+----------+
+|     10 | ACCOUNTING | NEW YORK |
+|     20 | RESEARCH   | DALLAS   |
+|     30 | SALES      | CHICAGO  |
+|     40 | OPERATIONS | BOSTON   |
++--------+------------+----------+
+4 rows in set (0.00 sec)
+
+1)
+mysql> SELECT * FROM EMP WHERE Job = (SELECT Job FROM emp WHERE Ename = 'BLAKE');
++-------+-------+---------+------+------------+---------+------+--------+
+| EMPNO | ENAME | JOB     | MGR  | HIREDATE   | SAL     | COMM | DEPTNO |
++-------+-------+---------+------+------------+---------+------+--------+
+|  7566 | JONES | MANAGER | 7839 | 1981-04-02 | 2975.00 | NULL |     20 |
+|  7698 | BLAKE | MANAGER | 7839 | 1981-05-01 | 2850.00 | NULL |     30 |
++-------+-------+---------+------+------------+---------+------+--------+
+2 rows in set (0.00 sec)
+
+2)
+mysql> SELECT * FROM EMP WHERE Job = (SELECT Job FROM emp WHERE Ename = 'ALLEN');
++-------+--------+----------+------+------------+---------+---------+--------+
+| EMPNO | ENAME  | JOB      | MGR  | HIREDATE   | SAL     | COMM    | DEPTNO |
++-------+--------+----------+------+------------+---------+---------+--------+
+|  7499 | ALLEN  | SALESMAN | 7698 | 1981-02-20 | 1600.00 |  300.00 |     30 |
+|  7521 | WARD   | SALESMAN | 7698 | 1981-02-22 | 1250.00 |  500.00 |     30 |
+|  7654 | MARTIN | SALESMAN | 7698 | 1981-09-28 | 1250.00 | 1400.00 |     30 |
+|  7844 | TURNER | SALESMAN | 7698 | 1981-09-08 | 1500.00 |    0.00 |     30 |
++-------+--------+----------+------+------------+---------+---------+--------+
+4 rows in set (0.01 sec)
+
+3)
+mysql> select * from EMP where SAL = (select SAL from EMP where ENAME = 'FORD') OR SAL = (select SAL from EMP where ENAME = 'SMITH') ORDER BY ENAME DESC;
++-------+-------+---------+------+------------+---------+--------+--------+
+| EMPNO | ENAME | JOB     | MGR  | HIREDATE   | SAL     | COMM   | DEPTNO |
++-------+-------+---------+------+------------+---------+--------+--------+
+|  7369 | SMITH | CLERK   | 7902 | 1980-12-17 |  500.00 | 800.00 |     20 |
+|  7902 | FORD  | ANALYST | 7566 | 1981-12-03 | 3000.00 |   NULL |     20 |
++-------+-------+---------+------+------------+---------+--------+--------+
+2 rows in set (0.00 sec)
+
+4)
+mysql> select * from EMP where JOB = (select JOB from EMP where ENAME = 'MILLER') OR SAL > (select SAL from EMP where ENAME = 'ALLEN');
++-------+--------+-----------+------+------------+---------+--------+--------+
+| EMPNO | ENAME  | JOB       | MGR  | HIREDATE   | SAL     | COMM   | DEPTNO |
++-------+--------+-----------+------+------------+---------+--------+--------+
+|  7369 | SMITH  | CLERK     | 7902 | 1980-12-17 |  500.00 | 800.00 |     20 |
+|  7566 | JONES  | MANAGER   | 7839 | 1981-04-02 | 2975.00 |   NULL |     20 |
+|  7698 | BLAKE  | MANAGER   | 7839 | 1981-05-01 | 2850.00 |   NULL |     30 |
+|  7839 | KING   | PRESIDENT | NULL | 1981-11-17 | 5000.00 |   NULL |     10 |
+|  7876 | ADAMS  | CLERK     | 7788 | 1983-01-12 | 1100.00 |   NULL |     20 |
+|  7900 | JAMES  | CLERK     | 7698 | 1981-12-03 |  950.00 |   NULL |     30 |
+|  7902 | FORD   | ANALYST   | 7566 | 1981-12-03 | 3000.00 |   NULL |     20 |
+|  7934 | MILLER | CLERK     | 7782 | 1982-01-23 | 1300.00 |   NULL |     10 |
++-------+--------+-----------+------+------------+---------+--------+--------+
+8 rows in set (0.00 sec)
+
+5)
+SELECT * FROM EMP WHERE SAL = (SELECT MAX(SAL) FROM EMP WHERE DEPTNO = (SELECT DEPTNO FROM dept WHERE DNAME = 'SALES'));
++-------+-------+---------+------+------------+---------+------+--------+
+| EMPNO | ENAME | JOB     | MGR  | HIREDATE   | SAL     | COMM | DEPTNO |
++-------+-------+---------+------+------------+---------+------+--------+
+|  7698 | BLAKE | MANAGER | 7839 | 1981-05-01 | 2850.00 | NULL |     30 |
++-------+-------+---------+------+------------+---------+------+--------+
+1 row in set (0.00 sec)
+
+6)
+mysql> SELECT * FROM EMP WHERE HIREDATE < (SELECT MAX(HIREDATE) FROM EMP WHERE MGR = (SELECT EMPNO FROM EMP WHERE ENAME = 'KING')) AND MGR = (SELECT EMPNO FROMEMP WHERE ENAME = 'KING');
+Empty set (0.00 sec)
+
+7)
+mysql> SELECT E.ENAME, E.SAL, D.DEPTNO
+    -> FROM EMP E
+    -> INNER JOIN DEPT D ON E.DEPTNO = D.DEPTNO
+    -> WHERE (E.DEPTNO, E.SAL) IN
+    -> (SELECT E2.DEPTNO, MAX(E2.SAL)
+    -> FROM EMP E2
+    -> GROUP BY E2.DEPTNO)
+    -> ;
++-------+---------+--------+
+| ENAME | SAL     | DEPTNO |
++-------+---------+--------+
+| BLAKE | 2850.00 |     30 |
+| KING  | 5000.00 |     10 |
+| FORD  | 3000.00 |     20 |
++-------+---------+--------+
+3 rows in set (0.01 sec)
+
+8)
+mysql> SELECT EMPNO, ENAME, SAL
+    -> FROM EMP
+    -> WHERE SAL = (SELECT AVG(SAL) FROM EMP WHERE SAL BETWEEN (SELECT MAX(SAL) FROM EMP) AND (SELECT MIN(SAL) FROM EMP));
+Empty set (0.00 sec)
+
+9)
+mysql> SELECT E1.EMPNO, E1.ENAME, E1.HIREDATE, E2.EMPNO, E2.ENAME, E2.HIREDATE
+    -> FROM EMP E1, EMP E2
+    -> WHERE E1.HIREDATE = E2.HIREDATE AND E1.EMPNO < E2.EMPNO;
++-------+-------+------------+-------+-------+------------+
+| EMPNO | ENAME | HIREDATE   | EMPNO | ENAME | HIREDATE   |
++-------+-------+------------+-------+-------+------------+
+|  7900 | JAMES | 1981-12-03 |  7902 | FORD  | 1981-12-03 |
++-------+-------+------------+-------+-------+------------+
+1 row in set (0.01 sec)
+
+10)
+mysql> SELECT E1.ENAME AS EMPLOYEE_NAME, E1.HIREDATE AS EMPLOYEE_HIREDATE, E2.ENAME AS MANAGER_NAME, E2.HIREDATE AS MANAGER_HIREDATE
+    -> FROM EMP E1, EMP E2
+    -> WHERE E1.MGR = E2.EMPNO AND E1.HIREDATE < E2.HIREDATE;
++---------------+-------------------+--------------+------------------+
+| EMPLOYEE_NAME | EMPLOYEE_HIREDATE | MANAGER_NAME | MANAGER_HIREDATE |
++---------------+-------------------+--------------+------------------+
+| SMITH         | 1980-12-17        | FORD         | 1981-12-03       |
+| ALLEN         | 1981-02-20        | BLAKE        | 1981-05-01       |
+| WARD          | 1981-02-22        | BLAKE        | 1981-05-01       |
+| JONES         | 1981-04-02        | KING         | 1981-11-17       |
+| BLAKE         | 1981-05-01        | KING         | 1981-11-17       |
++---------------+-------------------+--------------+------------------+
+5 rows in set (0.00 sec)

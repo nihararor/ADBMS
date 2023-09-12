@@ -1,0 +1,517 @@
+Copyright (c) 2000, 2022, Oracle and/or its affiliates.
+
+Oracle is a registered trademark of Oracle Corporation and/or its
+affiliates. Other names may be trademarks of their respective
+owners.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+mysql> create database
+    -> nihar;
+Query OK, 1 row affected (0.05 sec)
+
+mysql> use nihar;
+Database changed
+mysql> create table CLIENT_MASTER
+    -> (
+    -> CLIENT_NO Varchar(6),
+    -> NAME Varchar(20),
+    -> ADDRESS_1 Varchar(30),
+    -> ADDRESS_2 Varchar(30),
+    -> CITY Varchar(15),
+    -> PINCODE Integer,
+    -> STATE Varchar(15),
+    -> BALDUE Decimal(10,2))
+    -> ;
+Query OK, 0 rows affected (0.09 sec)
+
+mysql> create table PRODUCT_MASTER(
+    -> PRODUCTNO Varchar(6),
+    -> DESCRIPTION Varchar(15),
+    -> PROFITPERCENT Decimal(4,2),
+    -> UNIT_MEASURE Varchar(10),
+    -> QTYONHAND Integer,
+    -> REORDERL_VL Integer,
+    -> SELLPRICE Decimal(8,2),
+    -> COSTPRICE Decimal(8,2));
+Query OK, 0 rows affected (0.02 sec)
+mysql> desc PRODUCT_MASTER
+    -> ;
++---------------+--------------+------+-----+---------+-------+
+| Field         | Type         | Null | Key | Default | Extra |
++---------------+--------------+------+-----+---------+-------+
+| PRODUCTNO     | varchar(6)   | YES  |     | NULL    |       |
+| DESCRIPTION   | varchar(15)  | YES  |     | NULL    |       |
+| PROFITPERCENT | decimal(4,2) | YES  |     | NULL    |       |
+| UNIT_MEASURE  | varchar(10)  | YES  |     | NULL    |       |
+| QTYONHAND     | int          | YES  |     | NULL    |       |
+| REORDERL_VL   | int          | YES  |     | NULL    |       |
+| SELLPRICE     | decimal(8,2) | YES  |     | NULL    |       |
+| COSTPRICE     | decimal(8,2) | YES  |     | NULL    |       |
++---------------+--------------+------+-----+---------+-------+
+8 rows in set (0.01 sec)
+
+mysql> desc CLIENT_MASTER;
++-----------+---------------+------+-----+---------+-------+
+| Field     | Type          | Null | Key | Default | Extra |
++-----------+---------------+------+-----+---------+-------+
+| CLIENT_NO | varchar(6)    | YES  |     | NULL    |       |
+| NAME      | varchar(20)   | YES  |     | NULL    |       |
+| ADDRESS_1 | varchar(30)   | YES  |     | NULL    |       |
+| ADDRESS_2 | varchar(30)   | YES  |     | NULL    |       |
+| CITY      | varchar(15)   | YES  |     | NULL    |       |
+| PINCODE   | int           | YES  |     | NULL    |       |
+| STATE     | varchar(15)   | YES  |     | NULL    |       |
+| BALDUE    | decimal(10,2) | YES  |     | NULL    |       |
++-----------+---------------+------+-----+---------+-------+
+8 rows in set (0.02 sec)
+
+mysql> create table SALESMAN_MASTER(
+    -> SALESMANNO Varchar(6),
+    -> SALESMANNAME Varchar(20),
+    -> ADDRESS_1 Varchar(30),
+    -> ADDRESS_2 Varchar(30),
+    -> CITY Varchar(20),
+    -> PINCODE Integer,
+    ->
+    -> STATE Varchar(20),
+    -> SALAMT Real,
+    -> TGTTOGET Decimal,
+    -> YTDSALES Decimal(6,2),
+    -> REMARKS Varchar(60));
+Query OK, 0 rows affected (0.02 sec)
+
+mysql> desc SALESMAN_MASTER;
++--------------+---------------+------+-----+---------+-------+
+| Field        | Type          | Null | Key | Default | Extra |
++--------------+---------------+------+-----+---------+-------+
+| SALESMANNO   | varchar(6)    | YES  |     | NULL    |       |
+| SALESMANNAME | varchar(20)   | YES  |     | NULL    |       |
+| ADDRESS_1    | varchar(30)   | YES  |     | NULL    |       |
+| ADDRESS_2    | varchar(30)   | YES  |     | NULL    |       |
+| CITY         | varchar(20)   | YES  |     | NULL    |       |
+| PINCODE      | int           | YES  |     | NULL    |       |
+| STATE        | varchar(20)   | YES  |     | NULL    |       |
+| SALAMT       | double        | YES  |     | NULL    |       |
+| TGTTOGET     | decimal(10,0) | YES  |     | NULL    |       |
+| YTDSALES     | decimal(6,2)  | YES  |     | NULL    |       |
+| REMARKS      | varchar(60)   | YES  |     | NULL    |       |
++--------------+---------------+------+-----+---------+-------+
+11 rows in set (0.00 sec)
+
+
+mysql> INSERT INTO CLIENT_MASTER(CLIENT_NO, NAME, CITY, PINCODE, STATE, BALDUE) VALUES ('C00001', 'Ivan bayross', 'Mumbai', 400054, 'Maharastra', 15000);
+Query OK, 1 row affected (0.02 sec)
+
+mysql> select * from CLIENT_MASTER;
++-----------+--------------+-----------+-----------+--------+---------+------------+----------+
+| CLIENT_NO | NAME         | ADDRESS_1 | ADDRESS_2 | CITY   | PINCODE | STATE      | BALDUE   |
++-----------+--------------+-----------+-------select ----+--------+---------+------------+----------+
+| C00001    | Ivan bayross | NULL      | NULL      | Mumbai |  400054 | Maharastra | 15000.00 |
++-----------+--------------+-----------+-----------+--------+---------+------------+----------+
+1 row in set (0.00 sec)
+
+mysql> INSERT INTO CLIENT_MASTER(CLIENT_NO, NAME, CITY, PINCODE, STATE, BALDUE) VALUES ('C00002', 'Mamta muzumdar', 'Madras', 780001, 'Tamil nadu', 0);
+Query OK, 1 row affected (0.00 sec)
+
+mysql> select * from CLIENT_MASTER;
++-----------+----------------+-----------+-----------+--------+---------+------------+----------+
+| CLIENT_NO | NAME           | ADDRESS_1 | ADDRESS_2 | CITY   | PINCODE | STATE      | BALDUE   |
++-----------+----------------+-----------+-----------+--------+---------+------------+----------+
+| C00001    | Ivan bayross   | NULL      | NULL      | Mumbai |  400054 | Maharastra | 15000.00 |
+| C00002    | Mamta muzumdar | NULL      | NULL      | Madras |  780001 | Tamil nadu |     0.00 |
++-----------+----------------+-----------+-----------+--------+---------+------------+----------+
+2 rows in set (0.00 sec)
+
+mysql> INSERT INTO CLIENT_MASTER (CLIENT_NO, NAME, CITY, PINCODE, STATE, BALDUE) VALUES ('C00003', 'Chhaya bankar', 'Mumbai', 400057, 'Maharashtra' ,5000);
+Query OK, 1 row affected (0.03 sec)
+
+mysql> select * CLIENT_MASTER;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'CLIENT_MASTER' at line 1
+mysql> select * from CLIENT_MASTER;
++-----------+----------------+-----------+-----------+--------+---------+-------------+----------+
+| CLIENT_NO | NAME           | ADDRESS_1 | ADDRESS_2 | CITY   | PINCODE | STATE       | BALDUE   |
++-----------+----------------+-----------+-----------+--------+---------+-------------+----------+
+| C00001    | Ivan bayross   | NULL      | NULL      | Mumbai |  400054 | Maharastra  | 15000.00 |
+| C00002    | Mamta muzumdar | NULL      | NULL      | Madras |  780001 | Tamil nadu  |     0.00 |
+| C00003    | Chhaya bankar  | NULL      | NULL      | Mumbai |  400057 | Maharashtra |  5000.00 |
++-----------+----------------+-----------+-----------+--------+---------+-------------+----------+
+3 rows in set (0.00 sec)
+
+mysql> INSERT INTO CLIENT_MASTER (CLIENT_NO, NAME, CITY, PINCODE, STATE, BALDUE) VALUES ('C00004', 'Ashwini joshi', 'Bangalore', 560001, 'Karnataka' ,2000);
+Query OK, 1 row affected (0.00 sec)
+
+mysql> INSERT INTO CLIENT_MASTER (CLIENT_NO, NAME, CITY, PINCODE, STATE, BALDUE) VALUES ('C00005', 'Hansel colaco', 'Mumbai', 400060, 'Maharashtra' ,0);
+Query OK, 1 row affected (0.00 sec)
+
+mysql> select  *from CLIENT_MASTER;
++-----------+----------------+-----------+-----------+-----------+---------+-------------+----------+
+| CLIENT_NO | NAME           | ADDRESS_1 | ADDRESS_2 | CITY      | PINCODE | STATE       | BALDUE   |
++-----------+----------------+-----------+-----------+-----------+---------+-------------+----------+
+| C00001    | Ivan bayross   | NULL      | NULL      | Mumbai    |  400054 | Maharastra  | 15000.00 |
+| C00002    | Mamta muzumdar | NULL      | NULL      | Madras    |  780001 | Tamil nadu  |     0.00 |
+| C00003    | Chhaya bankar  | NULL      | NULL      | Mumbai    |  400057 | Maharashtra |  5000.00 |
+| C00004    | Ashwini joshi  | NULL      | NULL      | Bangalore |  560001 | Karnataka   |  2000.00 |
+| C00005    | Hansel colaco  | NULL      | NULL      | Mumbai    |  400060 | Maharashtra |     0.00 |
++-----------+----------------+-----------+-----------+-----------+---------+-------------+----------+
+5 rows in set (0.00 sec)
+
+
+mysql> INSERT INTO CLIENT_MASTER (CLIENT_NO, NAME, CITY, PINCODE, STATE, BALDUE) VALUES ('C00006','Deepak sharma', 'Bangalore', 560050, 'Karnataka' ,0);
+Query OK, 1 row affected (0.00 sec)
+
+mysql> select * from CLIENT_MASTER;
++-----------+----------------+-----------+-----------+-----------+---------+-------------+----------+
+| CLIENT_NO | NAME           | ADDRESS_1 | ADDRESS_2 | CITY      | PINCODE | STATE       | BALDUE   |
++-----------+----------------+-----------+-----------+-----------+---------+-------------+----------+
+| C00001    | Ivan bayross   | NULL      | NULL      | Mumbai    |  400054 | Maharastra  | 15000.00 |
+| C00002    | Mamta muzumdar | NULL      | NULL      | Madras    |  780001 | Tamil nadu  |     0.00 |
+| C00003    | Chhaya bankar  | NULL      | NULL      | Mumbai    |  400057 | Maharashtra |  5000.00 |
+| C00004    | Ashwini joshi  | NULL      | NULL      | Bangalore |  560001 | Karnataka   |  2000.00 |
+| C00005    | Hansel colaco  | NULL      | NULL      | Mumbai    |  400060 | Maharashtra |     0.00 |
+| C00006    | Deepak sharma  | NULL      | NULL      | Bangalore |  560050 | Karnataka   |     0.00 |
++-----------+----------------+-----------+-----------+-----------+---------+-------------+----------+
+6 rows in set (0.00 sec)
+
+
+
+mysql> INSERT INTO PRODUCT_MASTER VALUES ('P00001', 'T-Shirt',5, 'Piece', 200, 50, 350 ,250);
+Query OK, 1 row affected (0.03 sec)
+
+mysql> INSERT INTO PRODUCT_MASTER VALUES ('P0345', 'Shirts',6, 'Piece', 150, 50, 500 ,350);
+Query OK, 1 row affected (0.00 sec)
+
+mysql>
+mysql> INSERT INTO PRODUCT_MASTER VALUES ('P06734', 'Cotton jeans',5, 'Piece', 100, 20, 600 ,450);
+Query OK, 1 row affected (0.00 sec)
+
+mysql> INSERT INTO PRODUCT_MASTER VALUES ('P07868', 'Jeans',5, 'Piece', 100, 20, 750 ,500);
+Query OK, 1 row affected (0.00 sec)
+
+mysql> INSERT INTO PRODUCT_MASTER VALUES ('P07865', 'Trousers',2, 'Piece', 150, 50, 850 ,550);
+Query OK, 1 row affected (0.00 sec)
+
+mysql> INSERT INTO PRODUCT_MASTER VALUES ('P07965', 'Pull Overs',2.5, 'Piece', 80, 30, 700 ,450);
+Query OK, 1 row affected (0.00 sec)
+
+mysql> INSERT INTO PRODUCT_MASTER VALUES ('P07885', 'Denim jeans', 4, 'Piece', 100, 40, 350 ,250);
+Query OK, 1 row affected (0.00 sec)
+
+mysql> INSERT INTO PRODUCT_MASTER VALUES ('P07975', 'Lycra tops', 5, 'Piece', 70, 30, 300 ,175);
+Query OK, 1 row affected (0.00 sec)
+
+mysql> INSERT INTO PRODUCT_MASTER VALUES ('P08865', 'Skirts', 5, 'Piece', 75, 30, 450 ,300);
+Query OK, 1 row affected (0.00 sec)
+
+mysql> select * from PRODUCT_MASTER;
++-----------+--------------+---------------+--------------+-----------+-------------+-----------+-----------+
+| PRODUCTNO | DESCRIPTION  | PROFITPERCENT | UNIT_MEASURE | QTYONHAND | REORDERL_VL | SELLPRICE | COSTPRICE |
++-----------+--------------+---------------+--------------+-----------+-------------+-----------+-----------+
+| P00001    | T-Shirt      |          5.00 | Piece        |       200 |          50 |    350.00 |    250.00 |
+| P0345     | Shirts       |          6.00 | Piece        |       150 |          50 |    500.00 |    350.00 |
+| P06734    | Cotton jeans |          5.00 | Piece        |       100 |          20 |    600.00 |    450.00 |
+| P07868    | Jeans        |          5.00 | Piece        |       100 |          20 |    750.00 |    500.00 |
+| P07865    | Trousers     |          2.00 | Piece        |       150 |          50 |    850.00 |    550.00 |
+| P07965    | Pull Overs   |          2.50 | Piece        |        80 |          30 |    700.00 |    450.00 |
+| P07885    | Denim jeans  |          4.00 | Piece        |       100 |          40 |    350.00 |    250.00 |
+| P07975    | Lycra tops   |          5.00 | Piece        |        70 |          30 |    300.00 |    175.00 |
+| P08865    | Skirts       |          5.00 | Piece        |        75 |          30 |    450.00 |    300.00 |
++-----------+--------------+---------------+--------------+-----------+-------------+-----------+-----------+
+9 rows in set (0.00 sec)
+
+mysql> COMMIT;
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> INSERT INTO SALESMAN_MASTER (SALESMANNO, SALESMANNAME, "ADDRESS 1","ADDRESS 2", CITY, PINCODE, STATE) VALUES ('S00001', 'Aman', 'A/14', 'Worli', 'Mumbai', 400002, 'Maharashtra');
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '"ADDRESS 1","ADDRESS 2", CITY, PINCODE, STATE) VALUES ('S00001', 'Aman', 'A/14',' at line 1
+mysql> INSERT INTO SALESMAN_MASTER (SALESMANNO, SALESMANNAME, "ADDRESS_1","ADDRESS_2", CITY, PINCODE, STATE) VALUES ('S00001', 'Aman', 'A/14', 'Worli', 'Mumbai', 400002, 'Maharashtra');
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '"ADDRESS_1","ADDRESS_2", CITY, PINCODE, STATE) VALUES ('S00001', 'Aman', 'A/14',' at line 1
+mysql> INSERT INTO SALESMAN_MASTER (SALESMANNO, SALESMANNAME, ADDRESS_1, ADDRESS_2, CITY, PINCODE, STATE) VALUES ('S00001', 'Aman', 'A/14', 'Worli', 'Mumbai', 400002, 'Maharashtra');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> INSERT INTO SALESMAN_MASTER (SALESMANNO, SALESMANNAME, ADDRESS_1,ADDRESS_2, CITY, PINCODE, STATE) VALUES ('S00002', 'Omkar', '65', 'Nariman', 'Mumbai', 400001, 'Maharashtra');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> INSERT INTO SALESMAN_MASTER (SALESMANNO, SALESMANNAME, ADDRESS_1,ADDRESS_2, CITY, PINCODE, STATE) VALUES ('S00003', 'Raj', 'P-7', 'Bandra', 'Mumbai', 400032, 'Maharashtra');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> INSERT INTO SALESMAN_MASTER (SALESMANNO, SALESMANNAME, ADDRESS_1,ADDRESS_2, CITY, PINCODE, STATE) VALUES ('S00004', 'Ashish', 'A/5', 'Juhu', 'Mumbai', 400044, 'Maharashtra');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> select * from SALESMAN_MASTER;
++------------+--------------+-----------+-----------+--------+---------+-------------+--------+----------+----------+---------+
+| SALESMANNO | SALESMANNAME | ADDRESS_1 | ADDRESS_2 | CITY   | PINCODE | STATE       | SALAMT | TGTTOGET | YTDSALES | REMARKS |
++------------+--------------+-----------+-----------+--------+---------+-------------+--------+----------+----------+---------+
+| S00001     | Aman         | A/14      | Worli     | Mumbai |  400002 | Maharashtra |   NULL |     NULL |     NULL | NULL    |
+| S00002     | Omkar        | 65        | Nariman   | Mumbai |  400001 | Maharashtra |   NULL |     NULL |     NULL | NULL    |
+| S00003     | Raj          | P-7       | Bandra    | Mumbai |  400032 | Maharashtra |   NULL |     NULL |     NULL | NULL    |
+| S00004     | Ashish       | A/5       | Juhu      | Mumbai |  400044 | Maharashtra |   NULL |     NULL |     NULL | NULL    |
++------------+--------------+-----------+-----------+--------+---------+-------------+--------+----------+----------+---------+
+4 rows in set (0.00 sec)
+
+Quesion no 3
+a) 
+mysql> SELECT name FROM Client_Master;
++----------------+
+| name           |
++----------------+
+| Ivan bayross   |
+| Mamta muzumdar |
+| Chhaya bankar  |
+| Ashwini joshi  |
+| Hansel colaco  |
+| Deepak sharma  |
++----------------+
+6 rows in set (0.03 sec)
+
+b) 
+mysql> SELECT * FROM Client_Master;
++-----------+----------------+-----------+-----------+-----------+---------+-------------+----------+
+| CLIENT_NO | NAME           | ADDRESS_1 | ADDRESS_2 | CITY      | PINCODE | STATE       | BALDUE   |
++-----------+----------------+-----------+-----------+-----------+---------+-------------+----------+
+| C00001    | Ivan bayross   | NULL      | NULL      | Mumbai    |  400054 | Maharastra  | 15000.00 |
+| C00002    | Mamta muzumdar | NULL      | NULL      | Madras    |  780001 | Tamil nadu  |     0.00 |
+| C00003    | Chhaya bankar  | NULL      | NULL      | Mumbai    |  400057 | Maharashtra |  5000.00 |
+| C00004    | Ashwini joshi  | NULL      | NULL      | Bangalore |  560001 | Karnataka   |  2000.00 |
+| C00005    | Hansel colaco  | NULL      | NULL      | Mumbai    |  400060 | Maharashtra |     0.00 |
+| C00004    | Deepak sharma  | NULL      | NULL      | Mangalore |  560050 | Karnataka   |     0.00 |
++-----------+----------------+-----------+-----------+-----------+---------+-------------+----------+
+6 rows in set (0.00 sec)
+
+c)
+
+mysql> SELECT name, city, state FROM Client_Master;
++----------------+-----------+-------------+
+| name           | city      | state       |
++----------------+-----------+-------------+
+| Ivan bayross   | Mumbai    | Maharastra  |
+| Mamta muzumdar | Madras    | Tamil nadu  |
+| Chhaya bankar  | Mumbai    | Maharashtra |
+| Ashwini joshi  | Bangalore | Karnataka   |
+| Hansel colaco  | Mumbai    | Maharashtra |
+| Deepak sharma  | Mangalore | Karnataka   |
++----------------+-----------+-------------+
+6 rows in set (0.00 sec)
+
+d)
+
+mysql> select DESCRIPTION from Product_Master;
++--------------+
+| DESCRIPTION  |
++--------------+
+| T-Shirt      |
+| Shirts       |
+| Cotton jeans |
+| Jeans        |
+| Trousers     |
+| Pull Overs   |
+| Denim jeans  |
+| Lycra tops   |
+| Skirts       |
++--------------+
+9 rows in set (0.00 sec)
+
+e)
+
+mysql> SELECT name FROM Client_Master WHERE city = 'Mumbai';
++---------------+
+| name          |
++---------------+
+| Ivan bayross  |
+| Chhaya bankar |
+| Hansel colaco |
++---------------+
+3 rows in set (0.01 sec)
+
+f)
+
+mysql> SELECT name FROM salesman WHERE salary = 3000;
+ERROR 1146 (42S02): Table 'nihar.salesman' doesn't exist
+
+4)
+a)
+mysql> UPDATE CLIENT_MASTER SET city='Bangalore' WHERE Client_No='C00005';
+Query OK, 1 row affected (0.05 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> select * from CLIENT_MASTER;
++-----------+----------------+-----------+-----------+-----------+---------+-------------+----------+
+| CLIENT_NO | NAME           | ADDRESS_1 | ADDRESS_2 | CITY      | PINCODE | STATE       | BALDUE   |
++-----------+----------------+-----------+-----------+-----------+---------+-------------+----------+
+| C00001    | Ivan bayross   | NULL      | NULL      | Mumbai    |  400054 | Maharastra  | 15000.00 |
+| C00002    | Mamta muzumdar | NULL      | NULL      | Madras    |  780001 | Tamil nadu  |     0.00 |
+| C00003    | Chhaya bankar  | NULL      | NULL      | Mumbai    |  400057 | Maharashtra |  5000.00 |
+| C00004    | Ashwini joshi  | NULL      | NULL      | Bangalore |  560001 | Karnataka   |  2000.00 |
+| C00005    | Hansel colaco  | NULL      | NULL      | Bangalore |  400060 | Maharashtra |     0.00 |
+| C00004    | Deepak sharma  | NULL      | NULL      | Bangalore |  560050 | Karnataka   |     0.00 |
++-----------+----------------+-----------+-----------+-----------+---------+-------------+----------+
+6 rows in set (0.00 sec)
+
+b)
+mysql> UPDATE CLIENT_MASTER SET BalDue=1000 WHERE Client_No='C00001';
+Query OK, 1 row affected (0.01 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> select * from CLIENT_MASTER;
++-----------+----------------+-----------+-----------+-----------+---------+-------------+---------+
+| CLIENT_NO | NAME           | ADDRESS_1 | ADDRESS_2 | CITY      | PINCODE | STATE       | BALDUE  |
++-----------+----------------+-----------+-----------+-----------+---------+-------------+---------+
+| C00001    | Ivan bayross   | NULL      | NULL      | Mumbai    |  400054 | Maharastra  | 1000.00 |
+| C00002    | Mamta muzumdar | NULL      | NULL      | Madras    |  780001 | Tamil nadu  |    0.00 |
+| C00003    | Chhaya bankar  | NULL      | NULL      | Mumbai    |  400057 | Maharashtra | 5000.00 |
+| C00004    | Ashwini joshi  | NULL      | NULL      | Bangalore |  560001 | Karnataka   | 2000.00 |
+| C00005    | Hansel colaco  | NULL      | NULL      | Bangalore |  400060 | Maharashtra |    0.00 |
+| C00004    | Deepak sharma  | NULL      | NULL      | Bangalore |  560050 | Karnataka   |    0.00 |
++-----------+----------------+-----------+-----------+-----------+---------+-------------+---------+
+6 rows in set (0.00 sec)
+
+c)
+mysql> UPDATE PRODUCT_MASTER SET COSTPRICE=950.00 WHERE DESCRIPTION='Trousers';
+Query OK, 1 row affected (0.01 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> select * from PRODUCT_MASTER;
++-----------+--------------+---------------+--------------+-----------+-------------+-----------+-----------+
+| PRODUCTNO | DESCRIPTION  | PROFITPERCENT | UNIT_MEASURE | QTYONHAND | REORDERL_VL | SELLPRICE | COSTPRICE |
++-----------+--------------+---------------+--------------+-----------+-------------+-----------+-----------+
+| P00001    | T-Shirt      |          5.00 | Piece        |       200 |          50 |    350.00 |    250.00 |
+| P0345     | Shirts       |          6.00 | Piece        |       150 |          50 |    500.00 |    350.00 |
+| P06734    | Cotton jeans |          5.00 | Piece        |       100 |          20 |    600.00 |    450.00 |
+| P07868    | Jeans        |          5.00 | Piece        |       100 |          20 |    750.00 |    500.00 |
+| P07865    | Trousers     |          2.00 | Piece        |       150 |          50 |    850.00 |    950.00 |
+| P07965    | Pull Overs   |          2.50 | Piece        |        80 |          30 |    700.00 |    450.00 |
+| P07885    | Denim jeans  |          4.00 | Piece        |       100 |          40 |    350.00 |    250.00 |
+| P07975    | Lycra tops   |          5.00 | Piece        |        70 |          30 |    300.00 |    175.00 |
+| P08865    | Skirts       |          5.00 | Piece        |        75 |          30 |    450.00 |    300.00 |
++-----------+--------------+---------------+--------------+-----------+-------------+-----------+-----------+
+9 rows in set (0.00 sec)
+
+d)
+
+mysql> UPDATE SALESMAN_MASTER SET city='Pune';
+Query OK, 4 rows affected (0.01 sec)
+Rows matched: 4  Changed: 4  Warnings: 0
+
+mysql> select * from MASTER;
+ERROR 1146 (42S02): Table 'nihar.master' doesn't exist
+mysql> select * from SALESMAN_MASTER;
++------------+--------------+-----------+-----------+------+---------+-------------+--------+----------+----------+---------+
+| SALESMANNO | SALESMANNAME | ADDRESS_1 | ADDRESS_2 | CITY | PINCODE | STATE       | SALAMT | TGTTOGET | YTDSALES | REMARKS |
++------------+--------------+-----------+-----------+------+---------+-------------+--------+----------+----------+---------+
+| S00001     | Aman         | A/14      | Worli     | Pune |  400002 | Maharashtra |   NULL |     NULL |     NULL | NULL    |
+| S00002     | Omkar        | 65        | Nariman   | Pune |  400001 | Maharashtra |   NULL |     NULL |     NULL | NULL    |
+| S00003     | Raj          | P-7       | Bandra    | Pune |  400032 | Maharashtra |   NULL |     NULL |     NULL | NULL    |
+| S00004     | Ashish       | A/5       | Juhu      | Pune |  400044 | Maharashtra |   NULL |     NULL |     NULL | NULL    |
++------------+--------------+-----------+-----------+------+---------+-------------+--------+----------+----------+---------+
+4 rows in set (0.00 sec)
+
+5)
+
+a)
+
+mysql> DELETE FROM Salesman_Master WHERE salary = 3500;
+ERROR 1054 (42S22): Unknown column 'salary' in 'where clause'
+mysql>
+
+b)
+mysql> DELETE FROM Product_Master WHERE QTYONHAND = 100;
+Query OK, 3 rows affected (0.01 sec)
+
+mysql> select * from PRODUCT_MASTER;
++-----------+-------------+---------------+--------------+-----------+-------------+-----------+-----------+
+| PRODUCTNO | DESCRIPTION | PROFITPERCENT | UNIT_MEASURE | QTYONHAND | REORDERL_VL | SELLPRICE | COSTPRICE |
++-----------+-------------+---------------+--------------+-----------+-------------+-----------+-----------+
+| P00001    | T-Shirt     |          5.00 | Piece        |       200 |          50 |    350.00 |    250.00 |
+| P0345     | Shirts      |          6.00 | Piece        |       150 |          50 |    500.00 |    350.00 |
+| P07865    | Trousers    |          2.00 | Piece        |       150 |          50 |    850.00 |    950.00 |
+| P07965    | Pull Overs  |          2.50 | Piece        |        80 |          30 |    700.00 |    450.00 |
+| P07975    | Lycra tops  |          5.00 | Piece        |        70 |          30 |    300.00 |    175.00 |
+| P08865    | Skirts      |          5.00 | Piece        |        75 |          30 |    450.00 |    300.00 |
++-----------+-------------+---------------+--------------+-----------+-------------+-----------+-----------+
+6 rows in set (0.00 sec)
+
+c)
+mysql> DELETE FROM Client_Master WHERE state = 'Tamil Nadu';
+Query OK, 1 row affected (0.01 sec)
+
+mysql> select * from CLIENT_MASTER;
++-----------+---------------+-----------+-----------+-----------+---------+-------------+---------+
+| CLIENT_NO | NAME          | ADDRESS_1 | ADDRESS_2 | CITY      | PINCODE | STATE       | BALDUE  |
++-----------+---------------+-----------+-----------+-----------+---------+-------------+---------+
+| C00001    | Ivan bayross  | NULL      | NULL      | Mumbai    |  400054 | Maharastra  | 1000.00 |
+| C00003    | Chhaya bankar | NULL      | NULL      | Mumbai    |  400057 | Maharashtra | 5000.00 |
+| C00004    | Ashwini joshi | NULL      | NULL      | Bangalore |  560001 | Karnataka   | 2000.00 |
+| C00005    | Hansel colaco | NULL      | NULL      | Bangalore |  400060 | Maharashtra |    0.00 |
+| C00004    | Deepak sharma | NULL      | NULL      | Mangalore |  560050 | Karnataka   |    0.00 |
++-----------+---------------+-----------+-----------+-----------+---------+-------------+---------+
+5 rows in set (0.00 sec)
+
+
+6)
+a)
+mysql> ALTER TABLE Client_Master ADD Telephone INT;
+Query OK, 0 rows affected (0.17 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> desc CLIENT_MASTER;
++-----------+---------------+------+-----+---------+-------+
+| Field     | Type          | Null | Key | Default | Extra |
++-----------+---------------+------+-----+---------+-------+
+| CLIENT_NO | varchar(6)    | YES  |     | NULL    |       |
+| NAME      | varchar(20)   | YES  |     | NULL    |       |
+| ADDRESS_1 | varchar(30)   | YES  |     | NULL    |       |
+| ADDRESS_2 | varchar(30)   | YES  |     | NULL    |       |
+| CITY      | varchar(15)   | YES  |     | NULL    |       |
+| PINCODE   | int           | YES  |     | NULL    |       |
+| STATE     | varchar(15)   | YES  |     | NULL    |       |
+| BALDUE    | decimal(10,2) | YES  |     | NULL    |       |
+| Telephone | int           | YES  |     | NULL    |       |
++-----------+---------------+------+-----+---------+-------+
+9 rows in set (0.02 sec)
+
+b) 
+mysql> ALTER TABLE Product_Master MODIFY SellPrice DECIMAL(10, 2);
+Query OK, 6 rows affected (0.09 sec)
+Records: 6  Duplicates: 0  Warnings: 0
+
+mysql> desc PRODUCT_MASTER;
++---------------+---------------+------+-----+---------+-------+
+| Field         | Type          | Null | Key | Default | Extra |
++---------------+---------------+------+-----+---------+-------+
+| PRODUCTNO     | varchar(6)    | YES  |     | NULL    |       |
+| DESCRIPTION   | varchar(15)   | YES  |     | NULL    |       |
+| PROFITPERCENT | decimal(4,2)  | YES  |     | NULL    |       |
+| UNIT_MEASURE  | varchar(10)   | YES  |     | NULL    |       |
+| QTYONHAND     | int           | YES  |     | NULL    |       |
+| REORDERL_VL   | int           | YES  |     | NULL    |       |
+| SellPrice     | decimal(10,2) | YES  |     | NULL    |       |
+| COSTPRICE     | decimal(8,2)  | YES  |     | NULL    |       |
++---------------+---------------+------+-----+---------+-------+
+8 rows in set (0.00 sec)
+
+7)
+
+mysql> DROP TABLE Client_Master;
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> desc CLIENT_MASTER;
+ERROR 1146 (42S02): Table 'nihar.client_master' doesn't exist
+mysql> select * from CLIENT_MASTER;
+ERROR 1146 (42S02): Table 'nihar.client_master' doesn't exist
+mysql>
+
+8)
+
+mysql> RENAME TABLE Salesman_Master TO sman_mast;
+Query OK, 0 rows affected (0.03 sec)
+
+mysql> select * from sman_mast;
++------------+--------------+-----------+-----------+------+---------+-------------+--------+----------+----------+---------+
+| SALESMANNO | SALESMANNAME | ADDRESS_1 | ADDRESS_2 | CITY | PINCODE | STATE       | SALAMT | TGTTOGET | YTDSALES | REMARKS |
++------------+--------------+-----------+-----------+------+---------+-------------+--------+----------+----------+---------+
+| S00001     | Aman         | A/14      | Worli     | Pune |  400002 | Maharashtra |   NULL |     NULL |     NULL | NULL    |
+| S00002     | Omkar        | 65        | Nariman   | Pune |  400001 | Maharashtra |   NULL |     NULL |     NULL | NULL    |
+| S00003     | Raj          | P-7       | Bandra    | Pune |  400032 | Maharashtra |   NULL |     NULL |     NULL | NULL    |
+| S00004     | Ashish       | A/5       | Juhu      | Pune |  400044 | Maharashtra |   NULL |     NULL |     NULL | NULL    |
++------------+--------------+-----------+-----------+------+---------+-------------+--------+----------+----------+---------+
+4 rows in set (0.01 sec)

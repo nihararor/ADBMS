@@ -1,0 +1,246 @@
+Enter password: *********
+Welcome to the MySQL monitor.  Commands end with ; or \g.
+Your MySQL connection id is 8
+Server version: 8.0.31 MySQL Community Server - GPL
+
+Copyright (c) 2000, 2022, Oracle and/or its affiliates.
+
+Oracle is a registered trademark of Oracle Corporation and/or its
+affiliates. Other names may be trademarks of their respective
+owners.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+mysql> show databases;
++--------------------+
+| Database           |
++--------------------+
+| information_schema |
+| lab1               |
+| lab2               |
+| lab3               |
+| lab4               |
+| mysql              |
+| nihar              |
+| performance_schema |
+| sys                |
+| yt                 |
++--------------------+
+10 rows in set (0.15 sec)
+
+mysql> use lab4;
+Database changed
+
+1)
+1) 
+mysql> SELECT Deptno FROM DEPT WHERE NOT EXISTS (SELECT * FROM EMP WHERE DEPT.Deptno = EMP.Deptno);
++--------+
+| Deptno |
++--------+
+|     40 |
++--------+
+1 row in set (0.03 sec)
+
+2)
+mysql> select Deptno, Job,COUNT(*) as Num_Emps, AVG(Sal) as AVg_Salary from EMP Group by Deptno, Job;
++--------+-----------+----------+-------------+
+| Deptno | Job       | Num_Emps | AVg_Salary  |
++--------+-----------+----------+-------------+
+|     20 | CLERK     |        2 |  800.000000 |
+|     30 | SALESMAN  |        4 | 1400.000000 |
+|     20 | MANAGER   |        1 | 2975.000000 |
+|     30 | MANAGER   |        1 | 2850.000000 |
+|     10 | PRESIDENT |        1 | 5000.000000 |
+|     30 | CLERK     |        1 |  950.000000 |
+|     20 | ANALYST   |        1 | 3000.000000 |
+|     10 | CLERK     |        1 | 1300.000000 |
++--------+-----------+----------+-------------+
+8 rows in set (0.01 sec)
+
+3)
+mysql> SELECT Job, MAX(Avg_Salary) as Max_Avg_Salary FROM (SELECT Job, AVG(Sal) as Avg_Salary FROM EMP WHERE Job != 'PRESIDENT' GROUP BY Job) as Avg_Salaries GROUP BY Job;
++----------+----------------+
+| Job      | Max_Avg_Salary |
++----------+----------------+
+| CLERK    |     962.500000 |
+| SALESMAN |    1400.000000 |
+| MANAGER  |    2912.500000 |
+| ANALYST  |    3000.000000 |
++----------+----------------+
+4 rows in set (0.01 sec)
+
+4) 
+mysql> SELECT * FROM DEPT WHERE Deptno IN (SELECT Deptno FROM EMP GROUP BY Deptno HAVING COUNT(*) >= 2);
++--------+------------+----------+
+| DEPTNO | DNAME      | LOC      |
++--------+------------+----------+
+|     10 | ACCOUNTING | NEW YORK |
+|     20 | RESEARCH   | DALLAS   |
+|     30 | SALES      | CHICAGO  |
++--------+------------+----------+
+3 rows in set (0.01 sec)
+
+5)
+mysql> select Deptno, Count(*) as Num_Emps From Emp group by Deptno Having Count(*)>3;
++--------+----------+
+| Deptno | Num_Emps |
++--------+----------+
+|     20 |        4 |
+|     30 |        6 |
++--------+----------+
+2 rows in set (0.00 sec)
+
+6)
+mysql> SELECT Deptno, Ename, Sal FROM EMP WHERE (Deptno, Sal) IN (SELECT Deptno, MAX(Sal) FROM EMP GROUP BY Deptno) ORDER BY Deptno;
++--------+-------+---------+
+| Deptno | Ename | Sal     |
++--------+-------+---------+
+|     10 | KING  | 5000.00 |
+|     20 | FORD  | 3000.00 |
+|     30 | BLAKE | 2850.00 |
++--------+-------+---------+
+3 rows in set (0.01 sec)
+
+7)
+SELECT Deptno, AVG(Sal) as Avg_Sal FROM EMP GROUP BY Deptno HAVING AVG(Sal) < (SELECT AVG(Sal) FROM EMP)
+    -> ;
++--------+-------------+
+| Deptno | Avg_Sal     |
++--------+-------------+
+|     20 | 1893.750000 |
+|     30 | 1566.666667 |
++--------+-------------+
+2 rows in set (0.00 sec)
+
+2)
+a)
+mysql> SELECT e.*
+    -> FROM EMP e
+    -> JOIN EMP b ON e.Sal > b.Sal
+    -> WHERE b.ENAME = 'BLAKE';
++-------+-------+-----------+------+------------+---------+------+--------+
+| EMPNO | ENAME | JOB       | MGR  | HIREDATE   | SAL     | COMM | DEPTNO |
++-------+-------+-----------+------+------------+---------+------+--------+
+|  7566 | JONES | MANAGER   | 7839 | 1981-04-02 | 2975.00 | NULL |     20 |
+|  7839 | KING  | PRESIDENT | NULL | 1981-11-17 | 5000.00 | NULL |     10 |
+|  7902 | FORD  | ANALYST   | 7566 | 1981-12-03 | 3000.00 | NULL |     20 |
++-------+-------+-----------+------+------------+---------+------+--------+
+3 rows in set (0.10 sec)
+
+b)
+mysql> SELECT e.*
+    -> FROM EMP e
+    -> JOIN EMP a ON e.JOB = a.JOB
+    -> WHERE a.ENAME = 'ALLEN';
++-------+--------+----------+------+------------+---------+---------+--------+
+| EMPNO | ENAME  | JOB      | MGR  | HIREDATE   | SAL     | COMM    | DEPTNO |
++-------+--------+----------+------+------------+---------+---------+--------+
+|  7499 | ALLEN  | SALESMAN | 7698 | 1981-02-20 | 1600.00 |  300.00 |     30 |
+|  7521 | WARD   | SALESMAN | 7698 | 1981-02-22 | 1250.00 |  500.00 |     30 |
+|  7654 | MARTIN | SALESMAN | 7698 | 1981-09-28 | 1250.00 | 1400.00 |     30 |
+|  7844 | TURNER | SALESMAN | 7698 | 1981-09-08 | 1500.00 |    0.00 |     30 |
++-------+--------+----------+------+------------+---------+---------+--------+
+4 rows in set (0.00 sec)
+
+c)
+mysql> SELECT e.*
+    -> FROM EMP e
+    -> JOIN EMP f ON e.Sal = f.Sal
+    -> JOIN EMP s ON e.Sal = s.Sal
+    -> WHERE f.ENAME = 'FORD' OR s.ENAME = 'SMITH'
+    -> ORDER BY e.ENAME DESC;
++-------+-------+---------+------+------------+---------+--------+--------+
+| EMPNO | ENAME | JOB     | MGR  | HIREDATE   | SAL     | COMM   | DEPTNO |
++-------+-------+---------+------+------------+---------+--------+--------+
+|  7369 | SMITH | CLERK   | 7902 | 1980-12-17 |  500.00 | 800.00 |     20 |
+|  7902 | FORD  | ANALYST | 7566 | 1981-12-03 | 3000.00 |   NULL |     20 |
++-------+-------+---------+------+------------+---------+--------+--------+
+2 rows in set (0.01 sec)
+
+d)
+mysql> SELECT e.*
+    -> FROM EMP e
+    -> LEFT JOIN EMP m ON e.JOB = m.JOB AND m.ENAME = 'MILLER'
+    -> JOIN EMP a ON e.Sal > a.Sal AND a.ENAME = 'ALLEN'
+    -> WHERE m.ENAME IS NOT NULL OR e.Sal > a.Sal;
++-------+-------+-----------+------+------------+---------+------+--------+
+| EMPNO | ENAME | JOB       | MGR  | HIREDATE   | SAL     | COMM | DEPTNO |
++-------+-------+-----------+------+------------+---------+------+--------+
+|  7566 | JONES | MANAGER   | 7839 | 1981-04-02 | 2975.00 | NULL |     20 |
+|  7698 | BLAKE | MANAGER   | 7839 | 1981-05-01 | 2850.00 | NULL |     30 |
+|  7839 | KING  | PRESIDENT | NULL | 1981-11-17 | 5000.00 | NULL |     10 |
+|  7902 | FORD  | ANALYST   | 7566 | 1981-12-03 | 3000.00 | NULL |     20 |
++-------+-------+-----------+------+------------+---------+------+--------+
+4 rows in set (0.00 sec)
+
+e)
+mysql> SELECT e.*
+    -> FROM EMP e
+    -> JOIN DEPT d ON e.Deptno = d.Deptno AND d.DNAME = 'SALES'
+    -> WHERE e.Sal = (SELECT MAX(Sal) FROM EMP WHERE Deptno = d.Deptno);
++-------+-------+---------+------+------------+---------+------+--------+
+| EMPNO | ENAME | JOB     | MGR  | HIREDATE   | SAL     | COMM | DEPTNO |
++-------+-------+---------+------+------------+---------+------+--------+
+|  7698 | BLAKE | MANAGER | 7839 | 1981-05-01 | 2850.00 | NULL |     30 |
++-------+-------+---------+------+------------+---------+------+--------+
+1 row in set (0.01 sec)
+
+f)
+mysql> SELECT e.*
+    -> FROM EMP e
+    -> JOIN EMP k ON e.MGR = k.EMPNO AND k.ENAME = 'KING'
+    -> WHERE e.HIREDATE < (SELECT MAX(HIREDATE) FROM EMP WHERE MGR = k.EMPNO);
++-------+-------+---------+------+------------+---------+------+--------+
+| EMPNO | ENAME | JOB     | MGR  | HIREDATE   | SAL     | COMM | DEPTNO |
++-------+-------+---------+------+------------+---------+------+--------+
+|  7566 | JONES | MANAGER | 7839 | 1981-04-02 | 2975.00 | NULL |     20 |
++-------+-------+---------+------+------------+---------+------+--------+
+1 row in set (0.00 sec)
+
+g)
+mysql> SELECT d.DNAME, e.ENAME, e.Sal
+    -> FROM EMP e
+    -> JOIN DEPT d ON e.Deptno = d.Deptno
+    -> WHERE e.Sal = (SELECT MAX(Sal) FROM EMP WHERE Deptno = e.Deptno);
++------------+-------+---------+
+| DNAME      | ENAME | Sal     |
++------------+-------+---------+
+| SALES      | BLAKE | 2850.00 |
+| ACCOUNTING | KING  | 5000.00 |
+| RESEARCH   | FORD  | 3000.00 |
++------------+-------+---------+
+3 rows in set (0.00 sec)
+
+h)
+mysql> SELECT EMPNO, ENAME, SAL
+    -> FROM EMP
+    -> WHERE SAL = (SELECT AVG(SAL) FROM EMP WHERE SAL BETWEEN (SELECT MAX(SAL) FROM EMP) AND (SELECT MIN(SAL) FROM EMP));
+Empty set (0.00 sec)
+
+i)
+mysql> SELECT e1.ENAME, e1.HIREDATE, e2.ENAME, e2.HIREDATE
+    -> FROM EMP e1
+    -> JOIN EMP e2 ON e1.HIREDATE = e2.HIREDATE AND e1.ENAME != e2.ENAME;
++-------+------------+-------+------------+
+| ENAME | HIREDATE   | ENAME | HIREDATE   |
++-------+------------+-------+------------+
+| FORD  | 1981-12-03 | JAMES | 1981-12-03 |
+| JAMES | 1981-12-03 | FORD  | 1981-12-03 |
++-------+------------+-------+------------+
+2 rows in set (0.00 sec)
+
+j)
+mysql> SELECT e1.ENAME, e1.HIREDATE, e2.ENAME AS MANAGER_NAME, e2.HIREDATE AS MANAGER_HIREDATE
+    -> FROM EMP e1
+    -> INNER JOIN EMP e2 ON e1.MGR = e2.EMPNO
+    -> WHERE e1.HIREDATE < e2.HIREDATE;
++-------+------------+--------------+------------------+
+| ENAME | HIREDATE   | MANAGER_NAME | MANAGER_HIREDATE |
++-------+------------+--------------+------------------+
+| SMITH | 1980-12-17 | FORD         | 1981-12-03       |
+| ALLEN | 1981-02-20 | BLAKE        | 1981-05-01       |
+| WARD  | 1981-02-22 | BLAKE        | 1981-05-01       |
+| JONES | 1981-04-02 | KING         | 1981-11-17       |
+| BLAKE | 1981-05-01 | KING         | 1981-11-17       |
++-------+------------+--------------+------------------+
+5 rows in set (0.00 sec)

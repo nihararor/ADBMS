@@ -1,0 +1,27 @@
+mysql> CREATE TABLE CLIENT_MASTER_1 (
+    ->   CLIENTNO VARCHAR(6) PRIMARY KEY,
+    ->   NAME VARCHAR(20) NOT NULL,
+    ->   ADDRESS1 VARCHAR(30),
+    ->   ADDRESS2 VARCHAR(30),
+    ->   CITY VARCHAR(15),
+    ->   PINCODE INTEGER(8),
+    ->   STATE VARCHAR(15),
+    ->   BALDUE DECIMAL(10,2),
+    ->   CONSTRAINT first_letter_constraint CHECK (CLIENTNO like 'C%')
+    -> );
+Query OK, 0 rows affected, 1 warning (0.10 sec)
+
+mysql> desc CLIENT_MASTER_1;
++----------+---------------+------+-----+---------+-------+
+| Field    | Type          | Null | Key | Default | Extra |
++----------+---------------+------+-----+---------+-------+
+| CLIENTNO | varchar(6)    | NO   | PRI | NULL    |       |
+| NAME     | varchar(20)   | NO   |     | NULL    |       |
+| ADDRESS1 | varchar(30)   | YES  |     | NULL    |       |
+| ADDRESS2 | varchar(30)   | YES  |     | NULL    |       |
+| CITY     | varchar(15)   | YES  |     | NULL    |       |
+| PINCODE  | int           | YES  |     | NULL    |       |
+| STATE    | varchar(15)   | YES  |     | NULL    |       |
+| BALDUE   | decimal(10,2) | YES  |     | NULL    |       |
++----------+---------------+------+-----+---------+-------+
+8 rows in set (0.02 sec)

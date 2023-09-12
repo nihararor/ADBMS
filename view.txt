@@ -1,0 +1,396 @@
+Enter password: *********
+Welcome to the MySQL monitor.  Commands end with ; or \g.
+Your MySQL connection id is 15
+Server version: 8.0.31 MySQL Community Server - GPL
+
+Copyright (c) 2000, 2022, Oracle and/or its affiliates.
+
+Oracle is a registered trademark of Oracle Corporation and/or its
+affiliates. Other names may be trademarks of their respective
+owners.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+mysql> use lab1;
+Database changed
+mysql> create table Worker(
+    -> WORKER_ID INT PRIMARY KEY,
+    -> FIRST_NAME Varchar(50) NOT NULL,
+    -> LAST_NAME Varchar(50) NOT NULL,
+    -> SALARY Int NOT NULL,
+    -> JOINING_DATE DATETIME NOT NULL,
+    -> DEPARTMENT Varchar(50) NOT NULL);
+Query OK, 0 rows affected (0.15 sec)
+
+mysql> INSERT INTO Worker (WORKER_ID, FIRST_NAME, LAST_NAME, SALARY, JOINING_DATE, DEPARTMENT)VALUES(001, 'Monika', 'Arora', 100000, '2014-02-20 09:00:00', 'HR'),  (002, 'Niharika', 'Verma', 80000, '2014-06-11 09:00:00', 'Admin'),  (003, 'Vishal', 'Singhal', 300000, '2014-02-20 09:00:00', 'HR'),  (004, 'Amitabh', 'Singh', 500000, '2014-02-20 09:00:00', 'Admin'),  (005, 'Vivek', 'Bhati', 500000, '2014-06-11 09:00:00', 'Admin'),  (006, 'Diwan', 'Vipul', 200000, '2014-06-11 09:00:00', 'Account');
+Query OK, 6 rows affected (0.02 sec)
+Records: 6  Duplicates: 0  Warnings: 0
+
+mysql> SAVEPOINT savepoint1;
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> INSERT INTO Worker (WORKER_ID, FIRST_NAME, LAST_NAME, SALARY, JOINING_DATE, DEPARTMENT)VALUES(007, 'Kumar', 'Satish', 75000, '2014-01-20 09:00:00', 'Account'),  (008, 'Geetika', 'Chauhan', 90000, '2014-04-11 09:00:00', 'Admin');
+Query OK, 2 rows affected (0.00 sec)
+Records: 2  Duplicates: 0  Warnings: 0
+
+mysql> SAVEPOINT savepoint2;
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> INSERT INTO Worker (WORKER_ID, FIRST_NAME, LAST_NAME, SALARY, JOINING_DATE, DEPARTMENT)VALUES(009,'Nihar', 'Arora', 100000, '2014-04-13 09:00:00', 'HR');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> SAVEPOINT savepoint3;
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> ROLLBACK TO savepoint1;
+ERROR 1305 (42000): SAVEPOINT savepoint1 does not exist
+mysql> select * from Worker;
++-----------+------------+-----------+--------+---------------------+------------+
+| WORKER_ID | FIRST_NAME | LAST_NAME | SALARY | JOINING_DATE        | DEPARTMENT |
++-----------+------------+-----------+--------+---------------------+------------+
+|         1 | Monika     | Arora     | 100000 | 2014-02-20 09:00:00 | HR         |
+|         2 | Niharika   | Verma     |  80000 | 2014-06-11 09:00:00 | Admin      |
+|         3 | Vishal     | Singhal   | 300000 | 2014-02-20 09:00:00 | HR         |
+|         4 | Amitabh    | Singh     | 500000 | 2014-02-20 09:00:00 | Admin      |
+|         5 | Vivek      | Bhati     | 500000 | 2014-06-11 09:00:00 | Admin      |
+|         6 | Diwan      | Vipul     | 200000 | 2014-06-11 09:00:00 | Account    |
+|         7 | Kumar      | Satish    |  75000 | 2014-01-20 09:00:00 | Account    |
+|         8 | Geetika    | Chauhan   |  90000 | 2014-04-11 09:00:00 | Admin      |
+|         9 | Nihar      | Arora     | 100000 | 2014-04-13 09:00:00 | HR         |
++-----------+------------+-----------+--------+---------------------+------------+
+9 rows in set (0.00 sec)
+
+mysql> drop table Worker;
+Query OK, 0 rows affected (0.02 sec)
+
+mysql> create table Worker(
+    -> WORKER_ID INT PRIMARY KEY,
+    -> FIRST_NAME Varchar(50) NOT NULL,
+    -> LAST_NAME Varchar(50) NOT NULL,
+    -> SALARY Int NOT NULL,
+    -> JOINING_DATE DATETIME NOT NULL,
+    -> DEPARTMENT Varchar(50) NOT NULL);
+Query OK, 0 rows affected (0.02 sec)
+
+mysql> START TRANSACTION;
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> INSERT INTO Worker (WORKER_ID, FIRST_NAME, LAST_NAME, SALARY, JOINING_DATE, DEPARTMENT)VALUES(001, 'Monika', 'Arora', 100000, '2014-02-20 09:00:00', 'HR'),  (002, 'Niharika', 'Verma', 80000, '2014-06-11 09:00:00', 'Admin'),  (003, 'Vishal', 'Singhal', 300000, '2014-02-20 09:00:00', 'HR'),  (004, 'Amitabh', 'Singh', 500000, '2014-02-20 09:00:00', 'Admin'),  (005, 'Vivek', 'Bhati', 500000, '2014-06-11 09:00:00', 'Admin'),  (006, 'Diwan', 'Vipul', 200000, '2014-06-11 09:00:00', 'Account');
+Query OK, 6 rows affected (0.00 sec)
+Records: 6  Duplicates: 0  Warnings: 0
+
+mysql> SAVEPOINT savepoint1;
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> INSERT INTO Worker (WORKER_ID, FIRST_NAME, LAST_NAME, SALARY, JOINING_DATE, DEPARTMENT)VALUES(007, 'Kumar', 'Satish', 75000, '2014-01-20 09:00:00', 'Account'),  (008, 'Geetika', 'Chauhan', 90000, '2014-04-11 09:00:00', 'Admin');
+Query OK, 2 rows affected (0.00 sec)
+Records: 2  Duplicates: 0  Warnings: 0
+
+mysql> SAVEPOINT savepoint2;
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> INSERT INTO Worker (WORKER_ID, FIRST_NAME, LAST_NAME, SALARY, JOINING_DATE, DEPARTMENT)VALUES(009,'Nihar', 'Arora', 100000, '2014-04-13 09:00:00', 'HR');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> SAVEPOINT savepoint3;
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> ROLLBACK TO savepoint1;
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> select * from Worker;
++-----------+------------+-----------+--------+---------------------+------------+
+| WORKER_ID | FIRST_NAME | LAST_NAME | SALARY | JOINING_DATE        | DEPARTMENT |
++-----------+------------+-----------+--------+---------------------+------------+
+|         1 | Monika     | Arora     | 100000 | 2014-02-20 09:00:00 | HR         |
+|         2 | Niharika   | Verma     |  80000 | 2014-06-11 09:00:00 | Admin      |
+|         3 | Vishal     | Singhal   | 300000 | 2014-02-20 09:00:00 | HR         |
+|         4 | Amitabh    | Singh     | 500000 | 2014-02-20 09:00:00 | Admin      |
+|         5 | Vivek      | Bhati     | 500000 | 2014-06-11 09:00:00 | Admin      |
+|         6 | Diwan      | Vipul     | 200000 | 2014-06-11 09:00:00 | Account    |
++-----------+------------+-----------+--------+---------------------+------------+
+6 rows in set (0.00 sec)
+
+mysql> ROLLBACK TO savepoint2;
+ERROR 1305 (42000): SAVEPOINT savepoint2 does not exist
+mysql> ROLLBACK TO savepoint2;
+ERROR 1305 (42000): SAVEPOINT savepoint2 does not exist
+mysql> ROLLBACK TO savepoint3;
+ERROR 1305 (42000): SAVEPOINT savepoint3 does not exist
+mysql> ROLLBACK;
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> select * from Worker;
+Empty set (0.00 sec)
+
+mysql> SAVEPOINT savepoint3;
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> select * from Worker;
+Empty set (0.00 sec)
+
+mysql> ROLLBACK TO savepoint1;
+ERROR 1305 (42000): SAVEPOINT savepoint1 does not exist
+mysql> ROLLBACK TO savepoint1;
+ERROR 1305 (42000): SAVEPOINT savepoint1 does not exist
+mysql> ROLLBACK TO SAVEPOINT;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '' at line 1
+mysql> ROLLBACK TO savepoint;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '' at line 1
+mysql> ROLLBACK TO savepoint1;
+ERROR 1305 (42000): SAVEPOINT savepoint1 does not exist
+mysql> show tables;
++----------------+
+| Tables_in_lab1 |
++----------------+
+| client_master  |
+| worker         |
++----------------+
+2 rows in set (0.07 sec)
+
+mysql> desc Worker;
++--------------+-------------+------+-----+---------+-------+
+| Field        | Type        | Null | Key | Default | Extra |
++--------------+-------------+------+-----+---------+-------+
+| WORKER_ID    | int         | NO   | PRI | NULL    |       |
+| FIRST_NAME   | varchar(50) | NO   |     | NULL    |       |
+| LAST_NAME    | varchar(50) | NO   |     | NULL    |       |
+| SALARY       | int         | NO   |     | NULL    |       |
+| JOINING_DATE | datetime    | NO   |     | NULL    |       |
+| DEPARTMENT   | varchar(50) | NO   |     | NULL    |       |
++--------------+-------------+------+-----+---------+-------+
+6 rows in set (0.02 sec)
+
+mysql> INSERT INTO Worker (WORKER_ID, FIRST_NAME, LAST_NAME, SALARY, JOINING_DATE, DEPARTMENT)VALUES(001, 'Monika', 'Arora', 100000, '2014-02-20 09:00:00', 'HR'),  (002, 'Niharika', 'Verma', 80000, '2014-06-11 09:00:00', 'Admin'),  (003, 'Vishal', 'Singhal', 300000, '2014-02-20 09:00:00', 'HR'),  (004, 'Amitabh', 'Singh', 500000, '2014-02-20 09:00:00', 'Admin'),  (005, 'Vivek', 'Bhati', 500000, '2014-06-11 09:00:00', 'Admin'),  (006, 'Diwan', 'Vipul', 200000, '2014-06-11 09:00:00', 'Account');
+Query OK, 6 rows affected (0.00 sec)
+Records: 6  Duplicates: 0  Warnings: 0
+
+mysql> SAVEPOINT savepoint1;
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> INSERT INTO Worker (WORKER_ID, FIRST_NAME, LAST_NAME, SALARY, JOINING_DATE, DEPARTMENT)VALUES(007, 'Kumar', 'Satish', 75000, '2014-01-20 09:00:00', 'Account'),  (008, 'Geetika', 'Chauhan', 90000, '2014-04-11 09:00:00', 'Admin');
+Query OK, 2 rows affected (0.00 sec)
+Records: 2  Duplicates: 0  Warnings: 0
+
+mysql> SAVEPOINT savepoint2;
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> INSERT INTO Worker (WORKER_ID, FIRST_NAME, LAST_NAME, SALARY, JOINING_DATE, DEPARTMENT)VALUES(009,'Nihar', 'Arora', 100000, '2014-04-13 09:00:00', 'HR');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> SAVEPOINT savepoint3;
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> create view Worker as
+    -> select * from Worker where FIRST_NAME='Geetika';
+ERROR 1050 (42S01): Table 'Worker' already exists
+mysql> create view beta_user_ve as
+    -> select * from Worker where FIRST_NAME='Geetika';
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> select* from Worker;
++-----------+------------+-----------+--------+---------------------+------------+
+| WORKER_ID | FIRST_NAME | LAST_NAME | SALARY | JOINING_DATE        | DEPARTMENT |
++-----------+------------+-----------+--------+---------------------+------------+
+|         1 | Monika     | Arora     | 100000 | 2014-02-20 09:00:00 | HR         |
+|         2 | Niharika   | Verma     |  80000 | 2014-06-11 09:00:00 | Admin      |
+|         3 | Vishal     | Singhal   | 300000 | 2014-02-20 09:00:00 | HR         |
+|         4 | Amitabh    | Singh     | 500000 | 2014-02-20 09:00:00 | Admin      |
+|         5 | Vivek      | Bhati     | 500000 | 2014-06-11 09:00:00 | Admin      |
+|         6 | Diwan      | Vipul     | 200000 | 2014-06-11 09:00:00 | Account    |
+|         7 | Kumar      | Satish    |  75000 | 2014-01-20 09:00:00 | Account    |
+|         8 | Geetika    | Chauhan   |  90000 | 2014-04-11 09:00:00 | Admin      |
+|         9 | Nihar      | Arora     | 100000 | 2014-04-13 09:00:00 | HR         |
++-----------+------------+-----------+--------+---------------------+------------+
+9 rows in set (0.00 sec)
+
+mysql> select * from beta_user_ve;
++-----------+------------+-----------+--------+---------------------+------------+
+| WORKER_ID | FIRST_NAME | LAST_NAME | SALARY | JOINING_DATE        | DEPARTMENT |
++-----------+------------+-----------+--------+---------------------+------------+
+|         8 | Geetika    | Chauhan   |  90000 | 2014-04-11 09:00:00 | Admin      |
++-----------+------------+-----------+--------+---------------------+------------+
+1 row in set (0.00 sec)
+
+mysql> create view abc Worker;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'Worker' at line 1
+mysql> create view abc as select FIRST_NAME, LAST_NAME;
+ERROR 1054 (42S22): Unknown column 'FIRST_NAME' in 'field list'
+mysql> create view abc as select FIRST_NAME, LAST_NAME from Worker;
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> select * from abc;
++------------+-----------+
+| FIRST_NAME | LAST_NAME |
++------------+-----------+
+| Monika     | Arora     |
+| Niharika   | Verma     |
+| Vishal     | Singhal   |
+| Amitabh    | Singh     |
+| Vivek      | Bhati     |
+| Diwan      | Vipul     |
+| Kumar      | Satish    |
+| Geetika    | Chauhan   |
+| Nihar      | Arora     |
++------------+-----------+
+9 rows in set (0.00 sec)
+
+mysql> UPDATE Worker Set FIRST_NAME='Rahul' where LAST_NAME='Bhati';
+Query OK, 1 row affected (0.01 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> select* from Worker;
++-----------+------------+-----------+--------+---------------------+------------+
+| WORKER_ID | FIRST_NAME | LAST_NAME | SALARY | JOINING_DATE        | DEPARTMENT |
++-----------+------------+-----------+--------+---------------------+------------+
+|         1 | Monika     | Arora     | 100000 | 2014-02-20 09:00:00 | HR         |
+|         2 | Niharika   | Verma     |  80000 | 2014-06-11 09:00:00 | Admin      |
+|         3 | Vishal     | Singhal   | 300000 | 2014-02-20 09:00:00 | HR         |
+|         4 | Amitabh    | Singh     | 500000 | 2014-02-20 09:00:00 | Admin      |
+|         5 | Rahul      | Bhati     | 500000 | 2014-06-11 09:00:00 | Admin      |
+|         6 | Diwan      | Vipul     | 200000 | 2014-06-11 09:00:00 | Account    |
+|         7 | Kumar      | Satish    |  75000 | 2014-01-20 09:00:00 | Account    |
+|         8 | Geetika    | Chauhan   |  90000 | 2014-04-11 09:00:00 | Admin      |
+|         9 | Nihar      | Arora     | 100000 | 2014-04-13 09:00:00 | HR         |
++-----------+------------+-----------+--------+---------------------+------------+
+9 rows in set (0.00 sec)
+
+mysql> create view abc as select FIRST_NAME, LAST_NAME from Worker;
+ERROR 1050 (42S01): Table 'abc' already exists
+mysql> create view abc as select FIRST_NAME, LAST_NAME from Worker;
+ERROR 1050 (42S01): Table 'abc' already exists
+mysql> select * from abc;
++------------+-----------+
+| FIRST_NAME | LAST_NAME |
++------------+-----------+
+| Monika     | Arora     |
+| Niharika   | Verma     |
+| Vishal     | Singhal   |
+| Amitabh    | Singh     |
+| Rahul      | Bhati     |
+| Diwan      | Vipul     |
+| Kumar      | Satish    |
+| Geetika    | Chauhan   |
+| Nihar      | Arora     |
++------------+-----------+
+9 rows in set (0.00 sec)
+
+mysql> check abc;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'abc' at line 1
+mysql> create view abc as select FIRST_NAME, LAST_NAME from Worker with CHECK OPTION;
+ERROR 1050 (42S01): Table 'abc' already exists
+mysql> create view nihar as select FIRST_NAME, LAST_NAME with CHECK OPTION;
+ERROR 1054 (42S22): Unknown column 'FIRST_NAME' in 'field list'
+mysql> create view nihar as select FIRST_NAME, LAST_NAME from Worker with CHECK OPTION;
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> select * from Nihar;
++------------+-----------+
+| FIRST_NAME | LAST_NAME |
++------------+-----------+
+| Monika     | Arora     |
+| Niharika   | Verma     |
+| Vishal     | Singhal   |
+| Amitabh    | Singh     |
+| Rahul      | Bhati     |
+| Diwan      | Vipul     |
+| Kumar      | Satish    |
+| Geetika    | Chauhan   |
+| Nihar      | Arora     |
++------------+-----------+
+9 rows in set (0.00 sec)
+
+mysql> UPDATE Worker Set FIRST_NAME='Mohit' where LAST_NAME='Bhati';
+Query OK, 1 row affected (0.00 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> select * from Nihar;
++------------+-----------+
+| FIRST_NAME | LAST_NAME |
++------------+-----------+
+| Monika     | Arora     |
+| Niharika   | Verma     |
+| Vishal     | Singhal   |
+| Amitabh    | Singh     |
+| Mohit      | Bhati     |
+| Diwan      | Vipul     |
+| Kumar      | Satish    |
+| Geetika    | Chauhan   |
+| Nihar      | Arora     |
++------------+-----------+
+9 rows in set (0.00 sec)
+
+mysql> the view, you use the WITH CHECK OPTION when you create or modify the view.
+    ->
+    -> Let’s modify the view to include the WITH CHECK OPTION.
+    ->
+    -> CREATE OR REPLACE VIEW vps AS
+    ->     SELECT
+    ->         employeeNumber,
+    ->         lastName,
+    ->         firstName,
+    ->         jobTitle,
+    ->         extension,
+    ->         email,
+    ->         officeCode,
+    ->         reportsTo
+    ->     FROM
+    ->         employees
+    ->     WHERE
+    ->         jobTitle LIKE '%VP%'
+    -> WITH CHECK OPTION;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'the view, you use the WITH CHECK OPTION when you create or modify the view.
+
+Let' at line 1
+mysql> CREATE VIEW vps As
+    ->     SELECT
+    ->         FIRST_NAME,
+    -> LAST_NAME
+    ->     FROM
+    ->         Worker
+    -> where FIRST_NAME LIKE 'Mohit'
+    -> WITH CHECK OPTION;
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> select * from vps;
++------------+-----------+
+| FIRST_NAME | LAST_NAME |
++------------+-----------+
+| Mohit      | Bhati     |
++------------+-----------+
+1 row in set (0.00 sec)
+
+mysql> UPDATE Worker Set FIRST_NAME='Rohit' where LAST_NAME='Bhati';
+Query OK, 1 row affected (0.00 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> select * from vps;
+Empty set (0.00 sec)
+
+mysql> select * from Worker;
++-----------+------------+-----------+--------+---------------------+------------+
+| WORKER_ID | FIRST_NAME | LAST_NAME | SALARY | JOINING_DATE        | DEPARTMENT |
++-----------+------------+-----------+--------+---------------------+------------+
+|         1 | Monika     | Arora     | 100000 | 2014-02-20 09:00:00 | HR         |
+|         2 | Niharika   | Verma     |  80000 | 2014-06-11 09:00:00 | Admin      |
+|         3 | Vishal     | Singhal   | 300000 | 2014-02-20 09:00:00 | HR         |
+|         4 | Amitabh    | Singh     | 500000 | 2014-02-20 09:00:00 | Admin      |
+|         5 | Rohit      | Bhati     | 500000 | 2014-06-11 09:00:00 | Admin      |
+|         6 | Diwan      | Vipul     | 200000 | 2014-06-11 09:00:00 | Account    |
+|         7 | Kumar      | Satish    |  75000 | 2014-01-20 09:00:00 | Account    |
+|         8 | Geetika    | Chauhan   |  90000 | 2014-04-11 09:00:00 | Admin      |
+|         9 | Nihar      | Arora     | 100000 | 2014-04-13 09:00:00 | HR         |
++-----------+------------+-----------+--------+---------------------+------------+
+9 rows in set (0.00 sec)
+
+mysql> create READ only view Worker_VW as select FIRST_NAME, LAST_NAME from Worker;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'READ only view Worker_VW as select FIRST_NAME, LAST_NAME from Worker' at line 1
+mysql> create READONLY view Worker_VW as select FIRST_NAME, LAST_NAME from Worker;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'READONLY view Worker_VW as select FIRST_NAME, LAST_NAME from Worker' at line 1
+mysql> create READ only view Worker_VW as select FIRST_NAME, LAST_NAME from Worker with READ ONLY;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'READ only view Worker_VW as select FIRST_NAME, LAST_NAME from Worker with READ O' at line 1
+mysql> create view Worker_VW as select FIRST_NAME, LAST_NAME from Worker with READ ONLY;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'READ ONLY' at line 1
+mysql> create view Worker_VW as select FIRST_NAME, LAST_NAME from Worker where DEPARTMENT='Admin' with READ ONLY;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'READ ONLY' at line 1
+mysql>

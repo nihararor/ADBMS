@@ -1,0 +1,204 @@
+Enter password: *********
+Welcome to the MySQL monitor.  Commands end with ; or \g.
+Your MySQL connection id is 10
+Server version: 8.0.31 MySQL Community Server - GPL
+
+Copyright (c) 2000, 2022, Oracle and/or its affiliates.
+
+Oracle is a registered trademark of Oracle Corporation and/or its
+affiliates. Other names may be trademarks of their respective
+owners.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+mysql> show databases;
++--------------------+
+| Database           |
++--------------------+
+| a                  |
+| information_schema |
+| lab1               |
+| lab2               |
+| lab3               |
+| lab4               |
+| mysql              |
+| nihar              |
+| performance_schema |
+| sys                |
+| yt                 |
++--------------------+
+11 rows in set (0.17 sec)
+
+mysql> create lab6;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'lab6' at line 1
+mysql> create database lab6;
+Query OK, 1 row affected (0.02 sec)
+
+mysql> use lab6;
+Database changed
+mysql> CREATE TABLE EMPLOYEES (
+    ->     Employee_id CHAR(10) PRIMARY KEY,
+    ->     First_Name CHAR(30) NOT NULL,
+    ->     Last_Name CHAR(30) NOT NULL,
+    ->     DOB DATE,
+    ->     Salary NUMBER(25) NOT NULL,
+    ->     Department_id CHAR(10)
+    -> );
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'NUMBER(25) NOT NULL,
+    Department_id CHAR(10)
+)' at line 6
+mysql> ^C
+mysql> CREATE TABLE EMPLOYEES (
+    ->     Employee_id CHAR(10) PRIMARY KEY,
+    ->     First_Name CHAR(30) NOT NULL,
+    ->     Last_Name CHAR(30) NOT NULL,
+    ->     DOB DATE,
+    ->     Salary NUMBER(25) NOT NULL,
+    ->     Department_id CHAR(10)
+    -> );
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'NUMBER(25) NOT NULL,
+    Department_id CHAR(10)
+)' at line 6
+mysql> CREATE TABLE EMPLOYEES (
+    ->     Employee_id CHAR(10) PRIMARY KEY,
+    ->     First_Name CHAR(30) NOT NULL,
+    ->     Last_Name CHAR(30) NOT NULL,
+    ->     DOB DATE,
+    ->     Salary NUMBERIC(25) NOT NULL,
+    ->     Department_id CHAR(10)
+    -> );
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'NUMBERIC(25) NOT NULL,
+    Department_id CHAR(10)
+)' at line 6
+mysql> CREATE TABLE EMPLOYEES (
+    ->     Employee_id CHAR(10) PRIMARY KEY,
+    ->     First_Name CHAR(30) NOT NULL,
+    ->     Last_Name CHAR(30) NOT NULL,
+    ->     DOB DATE,
+    ->     Salary NUMERIC(25) NOT NULL,
+    ->     Department_id CHAR(10)
+    -> );
+Query OK, 0 rows affected (0.09 sec) 
+
+mysql> desc EMPLOYEES;
++---------------+---------------+------+-----+---------+-------+
+| Field         | Type          | Null | Key | Default | Extra |
++---------------+---------------+------+-----+---------+-------+
+| Employee_id   | char(10)      | NO   | PRI | NULL    |       |
+| First_Name    | char(30)      | NO   |     | NULL    |       |
+| Last_Name     | char(30)      | NO   |     | NULL    |       |
+| DOB           | date          | YES  |     | NULL    |       |
+| Salary        | decimal(25,0) | NO   |     | NULL    |       |
+| Department_id | char(10)      | YES  |     | NULL    |       |
++---------------+---------------+------+-----+---------+-------+
+6 rows in set (0.03 sec)
+
+mysql> INSERT INTO EMPLOYEES (Employee_id, First_Name, Last_Name, DOB, Salary, Department_id)
+    -> VALUES
+    ->     ('E1', 'Raman', 'Sharma', '1980-01-01', 50000, 'D001'),
+    ->     ('E2', 'Nihar', 'Arora', '1985-05-15', 60000, 'D001'),
+    ->     ('E3', 'Suraj', 'Bhandari', '1990-03-10', 70000, 'D002'),
+    ->     ('E4', 'Vinay', 'Thapa', '1982-09-20', 55000, 'D002'),
+    ->     ('E5', 'Rahul', 'Brown', '1988-12-31', 80000, 'D003'),
+    ->     ('E', 'Emily', 'Davis', '1995-06-25', 65000, 'D003');
+Query OK, 6 rows affected (0.02 sec)
+Records: 6  Duplicates: 0  Warnings: 0
+
+mysql> select * from EMPLOYEES;
++-------------+------------+-----------+------------+--------+---------------+
+| Employee_id | First_Name | Last_Name | DOB        | Salary | Department_id |
++-------------+------------+-----------+------------+--------+---------------+
+| E           | Emily      | Davis     | 1995-06-25 |  65000 | D003          |
+| E1          | Raman      | Sharma    | 1980-01-01 |  50000 | D001          |
+| E2          | Nihar      | Arora     | 1985-05-15 |  60000 | D001          |
+| E3          | Suraj      | Bhandari  | 1990-03-10 |  70000 | D002          |
+| E4          | Vinay      | Thapa     | 1982-09-20 |  55000 | D002          |
+| E5          | Rahul      | Brown     | 1988-12-31 |  80000 | D003          |
++-------------+------------+-----------+------------+--------+---------------+
+6 rows in set (0.00 sec)
+
+
+1) mysql> CREATE VIEW empview AS SELECT Employee_id, Last_Name, Salary, Department_id FROM EMPLOYEES;
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> select * from empview;
++-------------+-----------+--------+---------------+
+| Employee_id | Last_Name | Salary | Department_id |
++-------------+-----------+--------+---------------+
+| E           | Davis     |  65000 | D003          |
+| E1          | Sharma    |  50000 | D001          |
+| E2          | Arora     |  60000 | D001          |
+| E3          | Bhandari  |  70000 | D002          |
+| E4          | Thapa     |  55000 | D002          |
+| E5          | Brown     |  80000 | D003          |
++-------------+-----------+--------+---------------+
+6 rows in set (0.00 sec)
+
+2) 
+mysql> ALTER TABLE EMPLOYEES MODIFY Salary NUMBER(25);
+mysql> INSERT INTO EMPLOYEES (Employee_id, First_Name, Last_Name, DOB, Salary, Department_id)
+    -> VALUES
+    -> ('E6', 'Mohit', 'Brown', '1988-12-31', 80000, 'D006');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> SELECT * FROM empview;
++-------------+-----------+--------+---------------+
+| Employee_id | Last_Name | Salary | Department_id |
++-------------+-----------+--------+---------------+
+| E           | Davis     |  65000 | D003          |
+| E1          | Sharma    |  50000 | D001          |
+| E2          | Arora     |  60000 | D001          |
+| E3          | Bhandari  |  70000 | D002          |
+| E4          | Thapa     |  55000 | D002          |
+| E5          | Brown     |  80000 | D003          |
+| E6          | Brown     |  80000 | D006          |
++-------------+-----------+--------+---------------+
+7 rows in set (0.00 sec)
+
+3)
+mysql> ALTER VIEW empview AS SELECT Employee_id, Last_Name, Salary, Department_id FROM EMPLOYEES WHERE Salary > 60000;
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> SELECT * FROM empview;
++-------------+-----------+--------+---------------+
+| Employee_id | Last_Name | Salary | Department_id |
++-------------+-----------+--------+---------------+
+| E           | Davis     |  65000 | D003          |
+| E3          | Bhandari  |  70000 | D002          |
+| E5          | Brown     |  80000 | D003          |
+| E6          | Brown     |  80000 | D006          |
++-------------+-----------+--------+---------------+
+4 rows in set (0.00 sec)
+
+
+mysql> DELETE FROM EMPLOYEES WHERE Employee_id = 'E6';
+Query OK, 1 row affected (0.01 sec)
+mysql> select * from EMPLOYEES;
++-------------+------------+-----------+------------+--------+---------------+
+| Employee_id | First_Name | Last_Name | DOB        | Salary | Department_id |
++-------------+------------+-----------+------------+--------+---------------+
+| E           | Emily      | Davis     | 1995-06-25 |  65000 | D003          |
+| E1          | Raman      | Sharma    | 1980-01-01 |  50000 | D001          |
+| E2          | Nihar      | Arora     | 1985-05-15 |  60000 | D001          |
+| E3          | Suraj      | Bhandari  | 1990-03-10 |  70000 | D002          |
+| E4          | Vinay      | Thapa     | 1982-09-20 |  55000 | D002          |
+| E5          | Rahul      | Brown     | 1988-12-31 |  80000 | D003          |
++-------------+------------+-----------+------------+--------+---------------+
+6 rows in set (0.00 sec)
+
+mysql> DROP VIEW emp_view;
+ERROR 1051 (42S02): Unknown table 'lab6.emp_view'
+mysql> DROP VIEW empview;
+Query OK, 0 rows affected (0.01 sec)
+
+4)
+mysql> SELECT * FROM empview;
+ERROR 1146 (42S02): Table 'lab6.empview' doesn't exist
+mysql> CREATE VIEW salary_view AS SELECT Employee_id, First_Name, Last_Name, Salary*12 AS Annual_Salary FROM EMPLOYEES WHERE Department_id = '20';
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> SELECT * FROM salary_view;
+Empty set (0.00 sec)
+
+
+

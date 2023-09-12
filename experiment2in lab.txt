@@ -1,0 +1,733 @@
+Enter password: *********
+Welcome to the MySQL monitor.  Commands end with ; or \g.
+Your MySQL connection id is 46
+Server version: 8.0.31 MySQL Community Server - GPL
+
+Copyright (c) 2000, 2022, Oracle and/or its affiliates.
+
+Oracle is a registered trademark of Oracle Corporation and/or its
+affiliates. Other names may be trademarks of their respective
+owners.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+mysql> show databases;
++--------------------+
+| Database           |
++--------------------+
+| information_schema |
+| lab1               |
+| mysql              |
+| nihar              |
+| performance_schema |
+| sys                |
+| yt                 |
++--------------------+
+7 rows in set (0.03 sec)
+
+mysql> create database lab2;
+Query OK, 1 row affected (0.05 sec)
+
+mysql> use lab2;
+Database changed
+
+mysql> create table SUPPLIER(
+    -> SNO Varchar(5) Primary Key,
+    -> SNAME Varchar(25) Not NULL,
+    -> STATUS int Not NULL,
+    -> CITY Varchar(20) Not Null);
+Query OK, 0 rows affected (0.13 sec)
+
+mysql> desc SUPPLIER;
++--------+-------------+------+-----+---------+-------+
+| Field  | Type        | Null | Key | Default | Extra |
++--------+-------------+------+-----+---------+-------+
+| SNO    | varchar(5)  | NO   | PRI | NULL    |       |
+| SNAME  | varchar(25) | NO   |     | NULL    |       |
+| STATUS | int         | NO   |     | NULL    |       |
+| CITY   | varchar(20) | NO   |     | NULL    |       |
++--------+-------------+------+-----+---------+-------+
+4 rows in set (0.01 sec)
+
+mysql> create table PART(
+    -> PNO Varchar(6) Primary Key,
+    -> PNAME Varchar(25) NOT NULL,
+    -> COLOR Varchar(10) NOT NULL,
+    -> WEIGHT Numeric(5,1) NOT NULL,
+    -> CITY Varchar(20) NOT NULL);
+Query OK, 0 rows affected (0.07 sec)
+
+mysql> desc PART;
++--------+--------------+------+-----+---------+-------+
+| Field  | Type         | Null | Key | Default | Extra |
++--------+--------------+------+-----+---------+-------+
+| PNO    | varchar(6)   | NO   | PRI | NULL    |       |
+| PNAME  | varchar(25)  | NO   |     | NULL    |       |
+| COLOR  | varchar(10)  | NO   |     | NULL    |       |
+| WEIGHT | decimal(5,1) | NO   |     | NULL    |       |
+| CITY   | varchar(20)  | NO   |     | NULL    |       |
++--------+--------------+------+-----+---------+-------+
+5 rows in set (0.00 sec)
+
+
+mysql> create table PROJECT(
+    -> JNO Varchar(6) Primary Key,
+    -> JNAME Varchar(25) NOT NULL,
+    -> CITY Varchar(20) NOT NULL);
+Query OK, 0 rows affected (0.04 sec)
+
+mysql> desc PROJECT;
++-------+-------------+------+-----+---------+-------+
+| Field | Type        | Null | Key | Default | Extra |
++-------+-------------+------+-----+---------+-------+
+| JNO   | varchar(6)  | NO   | PRI | NULL    |       |
+| JNAME | varchar(25) | NO   |     | NULL    |       |
+| CITY  | varchar(20) | NO   |     | NULL    |       |
++-------+-------------+------+-----+---------+-------+
+3 rows in set (0.00 sec)
+
+
+mysql> create table SHIPMENT(
+    -> SNO Varchar(5) NOT NULL,
+    -> PNO Varchar(6) NOT NULL,
+    -> JNO Varchar(6) NOT NULL,
+    -> QTY int NOT NULL,
+    -> Primary Key(SNO,PNO,JNO),
+    -> foreign Key (SNO) references SUPPLIER(SNO),
+    -> foreign Key (PNO) references PART(PNO),
+    -> foreign Key (JNO) references PROJECT(JNO));
+Query OK, 0 rows affected (0.07 sec)
+
+mysql> desc SHIPMENT;
++-------+------------+------+-----+---------+-------+
+| Field | Type       | Null | Key | Default | Extra |
++-------+------------+------+-----+---------+-------+
+| SNO   | varchar(5) | NO   | PRI | NULL    |       |
+| PNO   | varchar(6) | NO   | PRI | NULL    |       |
+| JNO   | varchar(6) | NO   | PRI | NULL    |       |
+| QTY   | int        | NO   |     | NULL    |       |
++-------+------------+------+-----+---------+-------+
+4 rows in set (0.01 sec)
+
+mysql> insert INTO SUPPLIER(SNO, SNAME, STATUS, CITY) Values ('S1', 'SMITH', '20', 'LONDON');
+Query OK, 1 row affected (0.03 sec)
+
+mysql> select * from SUPPLIER;
++-----+-------+--------+--------+
+| SNO | SNAME | STATUS | CITY   |
++-----+-------+--------+--------+
+| S1  | SMITH |     20 | LONDON |
++-----+-------+--------+--------+
+1 row in set (0.00 sec)
+
+
+mysql> insert INTO SUPPLIER(SNO, SNAME, STATUS, CITY) Values ('S2', 'JONES', '10', 'PARRIS');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> insert INTO SUPPLIER(SNO, SNAME, STATUS, CITY) Values ('S3', 'BLAKE', '30', 'PARRIS');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> insert INTO SUPPLIER(SNO, SNAME, STATUS, CITY) Values ('S4', 'CLARK', '20', 'LONDON');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> insert INTO SUPPLIER(SNO, SNAME, STATUS, CITY) Values ('S5', 'ADAMS', '30', 'ATHENS');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> select * from SUPPLIER;
++-----+-------+--------+--------+
+| SNO | SNAME | STATUS | CITY   |
++-----+-------+--------+--------+
+| S1  | SMITH |     20 | LONDON |
+| S2  | JONES |     10 | PARRIS |
+| S3  | BLAKE |     30 | PARRIS |
+| S4  | CLARK |     20 | LONDON |
+| S5  | ADAMS |     30 | ATHENS |
++-----+-------+--------+--------+
+5 rows in set (0.00 sec)
+
+mysql> insert into PART(PNO, PNAME, COLOR, WEIGHT, CITY) Values ('P1', 'NUT', 'RED', '12', 'LONDON');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> select * from PART;
++-----+-------+-------+--------+--------+
+| PNO | PNAME | COLOR | WEIGHT | CITY   |
++-----+-------+-------+--------+--------+
+| P1  | NUT   | RED   |   12.0 | LONDON |
++-----+-------+-------+--------+--------+
+1 row in set (0.00 sec)
+
+
+
+mysql> insert into PART(PNO, PNAME, COLOR, WEIGHT, CITY) Values ('P2', 'BOLT', 'GREEN', '17', 'PARIS');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> insert into PART(PNO, PNAME, COLOR, WEIGHT, CITY) Values ('P3', 'SCREW', 'BLUE', '17', 'ROME');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> insert into PART(PNO, PNAME, COLOR, WEIGHT, CITY) Values ('P4', 'SCREW', 'RED', '14', 'LONDON');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> insert into PART(PNO, PNAME, COLOR, WEIGHT, CITY) Values ('P5', 'CAM', 'BLUE', '12', 'PARIS');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> insert into PART(PNO, PNAME, COLOR, WEIGHT, CITY) Values ('P6', 'COG', 'RED', '19', 'LONDON');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> select * from PART;
++-----+-------+-------+--------+--------+
+| PNO | PNAME | COLOR | WEIGHT | CITY   |
++-----+-------+-------+--------+--------+
+| P1  | NUT   | RED   |   12.0 | LONDON |
+| P2  | BOLT  | GREEN |   17.0 | PARIS  |
+| P3  | SCREW | BLUE  |   17.0 | ROME   |
+| P4  | SCREW | RED   |   14.0 | LONDON |
+| P5  | CAM   | BLUE  |   12.0 | PARIS  |
+| P6  | COG   | RED   |   19.0 | LONDON |
++-----+-------+-------+--------+--------+
+6 rows in set (0.00 sec)
+
+
+mysql> insert into PROJECT(JNO, JNAME, CITY) Values ('J1', 'SORTER', 'PARIS');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into PROJECT(JNO, JNAME, CITY) Values ('J2', 'DISPLAY', 'ROME');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into PROJECT(JNO, JNAME, CITY) Values ('J3', 'OCR', 'ATHENS');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> insert into PROJECT(JNO, JNAME, CITY) Values ('J4', 'CONSOLE', 'ATHENS');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> insert into PROJECT(JNO, JNAME, CITY) Values ('J5', 'RAID', 'LONDON');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> insert into PROJECT(JNO, JNAME, CITY) Values ('J6', 'EDS', 'OSLO');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> insert into PROJECT(JNO, JNAME, CITY) Values ('J7', 'TAPE', 'LONDON');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> select * from PROJECT'
+    '> ;
+    '> ;
+    '> ^C
+mysql> select * from PROJECT;
++-----+---------+--------+
+| JNO | JNAME   | CITY   |
++-----+---------+--------+
+| J1  | SORTER  | PARIS  |
+| J2  | DISPLAY | ROME   |
+| J3  | OCR     | ATHENS |
+| J4  | CONSOLE | ATHENS |
+| J5  | RAID    | LONDON |
+| J6  | EDS     | OSLO   |
+| J7  | TAPE    | LONDON |
++-----+---------+--------+
+7 rows in set (0.00 sec)
+
+mysql> insert into SHIPMENT(SNO, PNO, JNO, QTY) Values('S1','P1','J1','200');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> select * from SHIPMENT;
++-----+-----+-----+-----+
+| SNO | PNO | JNO | QTY |
++-----+-----+-----+-----+
+| S1  | P1  | J1  | 200 |
++-----+-----+-----+-----+
+1 row in set (0.00 sec)
+
+
+
+mysql> insert into SHIPMENT(SNO, PNO, JNO, QTY) Values('S1','P1','J4','700');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> insert into SHIPMENT(SNO, PNO, JNO, QTY) Values('S2','P3','J1','400');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> insert into SHIPMENT(SNO, PNO, JNO, QTY) Values('S2','P3','J2','200');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> insert into SHIPMENT(SNO, PNO, JNO, QTY) Values('S2','P3','J3','200');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> insert into SHIPMENT(SNO, PNO, JNO, QTY) Values('S2','P3','J4','500');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> insert into SHIPMENT(SNO, PNO, JNO, QTY) Values('S2','P3','J5','600');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> insert into SHIPMENT(SNO, PNO, JNO, QTY) Values('S2','P3','J6','400');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> insert into SHIPMENT(SNO, PNO, JNO, QTY) Values('S2','P3','J7','800');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> insert into SHIPMENT(SNO, PNO, JNO, QTY) Values('S2','P5','J2','100');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> insert into SHIPMENT(SNO, PNO, JNO, QTY) Values('S3','P3','J1','200');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> insert into SHIPMENT(SNO, PNO, JNO, QTY) Values('S3','P4','J2','500');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> insert into SHIPMENT(SNO, PNO, JNO, QTY) Values('S4','P6','J3','300');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> insert into SHIPMENT(SNO, PNO, JNO, QTY) Values('S4','P6','J7','300');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> insert into SHIPMENT(SNO, PNO, JNO, QTY) Values('S5','P2','J2','200');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> insert into SHIPMENT(SNO, PNO, JNO, QTY) Values('S5','P2','J4','100');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> insert into SHIPMENT(SNO, PNO, JNO, QTY) Values('S5','P5','J5','500');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> insert into SHIPMENT(SNO, PNO, JNO, QTY) Values('S5','P5','J','100');
+ERROR 1452 (23000): Cannot add or update a child row: a foreign key constraint fails (`lab2`.`shipment`, CONSTRAINT `shipment_ibfk_3` FOREIGN KEY (`JNO`) REFERENCES `project` (`JNO`))
+mysql> insert into SHIPMENT(SNO, PNO, JNO, QTY) Values('S5','P5','J7','100');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> insert into SHIPMENT(SNO, PNO, JNO, QTY) Values('S5','P6','J2','200');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> insert into SHIPMENT(SNO, PNO, JNO, QTY) Values('S5','P1','J4','100');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> insert into SHIPMENT(SNO, PNO, JNO, QTY) Values('S5','P3','J4','200');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> insert into SHIPMENT(SNO, PNO, JNO, QTY) Values('S5','P4','J4','800');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into SHIPMENT(SNO, PNO, JNO, QTY) Values('S5','P5','J4','400');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> insert into SHIPMENT(SNO, PNO, JNO, QTY) Values('S5','P6','J4','500');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> select * from SHIPMENT;
++-----+-----+-----+-----+
+| SNO | PNO | JNO | QTY |
++-----+-----+-----+-----+
+| S1  | P1  | J1  | 200 |
+| S1  | P1  | J4  | 700 |
+| S2  | P3  | J1  | 400 |
+| S2  | P3  | J2  | 200 |
+| S2  | P3  | J3  | 200 |
+| S2  | P3  | J4  | 500 |
+| S2  | P3  | J5  | 600 |
+| S2  | P3  | J6  | 400 |
+| S2  | P3  | J7  | 800 |
+| S2  | P5  | J2  | 100 |
+| S3  | P3  | J1  | 200 |
+| S3  | P4  | J2  | 500 |
+| S4  | P6  | J3  | 300 |
+| S4  | P6  | J7  | 300 |
+| S5  | P1  | J4  | 100 |
+| S5  | P2  | J2  | 200 |
+| S5  | P2  | J4  | 100 |
+| S5  | P3  | J4  | 200 |
+| S5  | P4  | J4  | 800 |
+| S5  | P5  | J4  | 400 |
+| S5  | P5  | J5  | 500 |
+| S5  | P5  | J7  | 100 |
+| S5  | P6  | J2  | 200 |
+| S5  | P6  | J4  | 500 |
++-----+-----+-----+-----+
+24 rows in set (0.00 sec)
+
+
+3) 
+Basic on simple query
+
+1) 
+mysql> select * from SUPPLIER;
++-----+-------+--------+--------+
+| SNO | SNAME | STATUS | CITY   |
++-----+-------+--------+--------+
+| S1  | SMITH |     20 | LONDON |
+| S2  | JONES |     10 | PARRIS |
+| S3  | BLAKE |     30 | PARRIS |
+| S4  | CLARK |     20 | LONDON |
+| S5  | ADAMS |     30 | ATHENS |
++-----+-------+--------+--------+
+5 rows in set (0.00 sec)
+
+2)
+
+mysql> select * from PART;
++-----+-------+-------+--------+--------+
+| PNO | PNAME | COLOR | WEIGHT | CITY   |
++-----+-------+-------+--------+--------+
+| P1  | NUT   | RED   |   12.0 | LONDON |
+| P2  | BOLT  | GREEN |   17.0 | PARIS  |
+| P3  | SCREW | BLUE  |   17.0 | ROME   |
+| P4  | SCREW | RED   |   14.0 | LONDON |
+| P5  | CAM   | BLUE  |   12.0 | PARIS  |
+| P6  | COG   | RED   |   19.0 | LONDON |
++-----+-------+-------+--------+--------+
+6 rows in set (0.00 sec)
+
+3)
+
+mysql> select * from PROJECT;
++-----+---------+--------+
+| JNO | JNAME   | CITY   |
++-----+---------+--------+
+| J1  | SORTER  | PARIS  |
+| J2  | DISPLAY | ROME   |
+| J3  | OCR     | ATHENS |
+| J4  | CONSOLE | ATHENS |
+| J5  | RAID    | LONDON |
+| J6  | EDS     | OSLO   |
+| J7  | TAPE    | LONDON |
++-----+---------+--------+
+7 rows in set (0.00 sec)
+
+4)
+
+mysql> select * from SHIPMENT;
++-----+-----+-----+-----+
+| SNO | PNO | JNO | QTY |
++-----+-----+-----+-----+
+| S1  | P1  | J1  | 200 |
+| S1  | P1  | J4  | 700 |
+| S2  | P3  | J1  | 400 |
+| S2  | P3  | J2  | 200 |
+| S2  | P3  | J3  | 200 |
+| S2  | P3  | J4  | 500 |
+| S2  | P3  | J5  | 600 |
+| S2  | P3  | J6  | 400 |
+| S2  | P3  | J7  | 800 |
+| S2  | P5  | J2  | 100 |
+| S3  | P3  | J1  | 200 |
+| S3  | P4  | J2  | 500 |
+| S4  | P6  | J3  | 300 |
+| S4  | P6  | J7  | 300 |
+| S5  | P1  | J4  | 100 |
+| S5  | P2  | J2  | 200 |
+| S5  | P2  | J4  | 100 |
+| S5  | P3  | J4  | 200 |
+| S5  | P4  | J4  | 800 |
+| S5  | P5  | J4  | 400 |
+| S5  | P5  | J5  | 500 |
+| S5  | P5  | J7  | 100 |
+| S5  | P6  | J2  | 200 |
+| S5  | P6  | J4  | 500 |
++-----+-----+-----+-----+
+24 rows in set (0.00 sec)
+
+5)
+
+mysql> select * from PROJECT where CITY ='LONDON';
++-----+-------+--------+
+| JNO | JNAME | CITY   |
++-----+-------+--------+
+| J5  | RAID  | LONDON |
+| J7  | TAPE  | LONDON |
++-----+-------+--------+
+2 rows in set (0.00 sec)
+
+6)
+
+mysql> select * from SHIPMENT where QTY<=750 && QTY >= 300;
++-----+-----+-----+-----+
+| SNO | PNO | JNO | QTY |
++-----+-----+-----+-----+
+| S1  | P1  | J4  | 700 |
+| S2  | P3  | J1  | 400 |
+| S2  | P3  | J4  | 500 |
+| S2  | P3  | J5  | 600 |
+| S2  | P3  | J6  | 400 |
+| S3  | P4  | J2  | 500 |
+| S4  | P6  | J3  | 300 |
+| S4  | P6  | J7  | 300 |
+| S5  | P5  | J4  | 400 |
+| S5  | P5  | J5  | 500 |
+| S5  | P6  | J4  | 500 |
++-----+-----+-----+-----+
+11 rows in set, 1 warning (0.00 sec)
+
+7)
+mysql> Select SNO,STATUS
+    -> FROM SUPPLIER where CITY='PARRIS' Order by STATUS DESC;
++-----+--------+
+| SNO | STATUS |
++-----+--------+
+| S3  |     30 |
+| S2  |     10 |
++-----+--------+
+2 rows in set (0.00 sec)
+
+8) 
+
+mysql> select PNO from PART where COLOR='RED' and WEIGHT >=14;
++-----+
+| PNO |
++-----+
+| P4  |
+| P6  |
++-----+
+2 rows in set (0.00 sec)
+
+9)
+
+mysql> SELECT SNO FROM SHIPMENT WHERE JNO='J1';
++-----+
+| SNO |
++-----+
+| S1  |
+| S2  |
+| S3  |
++-----+
+3 rows in set (0.00 sec)
+
+10)
+
+mysql> SELECT SNO FROM SHIPMENT WHERE JNO='J1' ORDER BY SNO ASC;
++-----+
+| SNO |
++-----+
+| S1  |
+| S2  |
+| S3  |
++-----+
+3 rows in set (0.00 sec)
+
+
+Based On Aggregade function
+
+11)
+
+mysql> select COUNT(SNO) as total_SUPPLIER from SUPPLIER;
++----------------+
+| total_SUPPLIER |
++----------------+
+|              5 |
++----------------+
+1 row in set (0.05 sec)
+
+12)
+
+mysql> SELECT PNO, MAX(WEIGHT) AS max_quality, MIN(WEIGHT) AS min_quality from PART group by PNO;
+mysql> SELECT PNO, MAX(QTY) AS max_quantity, MIN(QTY) AS min_quantity from SHIPMENT GROUP BY PNO;
++-----+--------------+--------------+
+| PNO | max_quantity | min_quantity |
++-----+--------------+--------------+
+| P1  |          700 |          100 |
+| P2  |          200 |          100 |
+| P3  |          800 |          200 |
+| P4  |          800 |          500 |
+| P5  |          500 |          100 |
+| P6  |          500 |          200 |
++-----+--------------+--------------+
+6 rows in set (0.01 sec)
+
+13)
+
+mysql> SELECT PNO, MAX(WEIGHT) AS max_quality, MIN(WEIGHT) AS min_quality from PART where PNO='P2';
++--------------+--------------+
+| max_quantity | min_quantity |
++--------------+--------------+
+|          800 |          100 |
+|          200 |          100 |
++--------------+--------------+
+2 rows in set (0.00 sec)
+
+14)
+mysql> SELECT MAX(QTY) AS max_quantity, MIN(QTY) AS min_quantity from SHIPMENT GROUP BY PNO='P2';
+mysql> SELECT DISTINCT PNO FROM SHIPMENT WHERE JNO IN(SELECT JNO FROM SHIPMENT GROUP BY PNO,JNO HAVING AVG(QTY)>350);
++-----+
+| PNO |
++-----+
+| P1  |
+| P2  |
+| P3  |
+| P4  |
+| P5  |
+| P6  |
++-----+
+6 rows in set (0.01 sec)
+
+
+15)
+mysql> SELECT COUNT(DISTINCT JNO) AS total_projects from SHIPMENT where SNO='S1';
++----------------+
+| total_projects |
++----------------+
+|              2 |
++----------------+
+1 row in set (0.00 sec)
+
+16)
+mysql> SELECT SUM(QTY) AS total_quantity from SHIPMENT where PNO='P1' AND SNO='S1';
++----------------+
+| total_quantity |
++----------------+
+|            900 |
++----------------+
+1 row in set (0.01 sec)
+
+17)
+mysql> SELECT PNO,SUM(QTY) AS total_quantity from SHIPMENT GROUP BY PNO;
++-----+----------------+
+| PNO | total_quantity |
++-----+----------------+
+| P1  |           1000 |
+| P2  |            300 |
+| P3  |           3500 |
+| P4  |           1300 |
+| P5  |           1100 |
+| P6  |           1300 |
++-----+----------------+
+6 rows in set (0.00 sec)
+
+18)
+mysql> SELECT PNO,JNO,SUM(QTY) AS total_shipment_quantity from SHIPMENT GROUP BY PNO,JNO;
++-----+-----+-------------------------+
+| PNO | JNO | total_shipment_quantity |
++-----+-----+-------------------------+
+| P1  | J1  |                     200 |
+| P1  | J4  |                     800 |
+| P3  | J1  |                     600 |
+| P3  | J2  |                     200 |
+| P3  | J3  |                     200 |
+| P3  | J4  |                     700 |
+| P3  | J5  |                     600 |
+| P3  | J6  |                     400 |
+| P3  | J7  |                     800 |
+| P5  | J2  |                     100 |
+| P4  | J2  |                     500 |
+| P6  | J3  |                     300 |
+| P6  | J7  |                     300 |
+| P2  | J2  |                     200 |
+| P2  | J4  |                     100 |
+| P4  | J4  |                     800 |
+| P5  | J4  |                     400 |
+| P5  | J5  |                     500 |
+| P5  | J7  |                     100 |
+| P6  | J2  |                     200 |
+| P6  | J4  |                     500 |
++-----+-----+-------------------------+
+21 rows in set (0.00 sec)
+
+19)
+mysql> SELECT PNO,COUNT(DISTINCT SNO) AS total_suppliers from SHIPMENT GROUP BY PNO;
++-----+-----------------+
+| PNO | total_suppliers |
++-----+-----------------+
+| P1  |               2 |
+| P2  |               1 |
+| P3  |               3 |
+| P4  |               2 |
+| P5  |               2 |
+| P6  |               2 |
++-----+-----------------+
+6 rows in set (0.00 sec)
+
+20)
+mysql> SELECT PNO,COUNT(DISTINCT SNO) AS total_suppliers from SHIPMENT GROUP BY PNO HAVING COUNT(DISTINCT SNO)>2;
++-----+-----------------+
+| PNO | total_suppliers |
++-----+-----------------+
+| P3  |               3 |
++-----+-----------------+
+1 row in set (0.00 sec)
+
+21)
+mysql> SELECT SUPPLIER.SNAME FROM SUPPLIER JOIN SHIPMENT ON SUPPLIER.SNO = SHIPMENT.SNO WHERE SHIPMENT.PNO='P3';
++-------+
+| SNAME |
++-------+
+| JONES |
+| JONES |
+| JONES |
+| JONES |
+| JONES |
+| JONES |
+| JONES |
+| BLAKE |
+| ADAMS |
++-------+
+9 rows in set (0.00 sec)
+
+22)
+mysql> SELECT DISTINCT SUPPLIER.SNAME FROM SUPPLIER JOIN SHIPMENT ON SUPPLIER.SNO = SHIPMENT.SNO WHERE SHIPMENT.PNO='P3';
++-------+
+| SNAME |
++-------+
+| JONES |
+| BLAKE |
+| ADAMS |
++-------+
+3 rows in set (0.00 sec)
+
+23)
+mysql> select SHIPMENT.PNO from SHIPMENT join SUPPLIER ON SHIPMENT.SNO = SUPPLIER.SNO where SUPPLIER.CITY = 'LONDON';
++-----+
+| PNO |
++-----+
+| P1  |
+| P1  |
+| P6  |
+| P6  |
++-----+
+4 rows in set (0.00 sec)
+
+24)
+mysql> select SUPPLIER.SNO, SUPPLIER.SNAME FROM SUPPLIER JOIN SHIPMENT ON SUPPLIER.SNO=SHIPMENT.SNO WHERE SHIPMENT.JNO='J1';
++-----+-------+
+| SNO | SNAME |
++-----+-------+
+| S1  | SMITH |
+| S2  | JONES |
+| S3  | BLAKE |
++-----+-------+
+3 rows in set (0.01 sec)
+
+25)
+mysql> select SHIPMENT.PNO from SHIPMENT join SUPPLIER ON SHIPMENT.SNO = SUPPLIER.SNO join PROJECT ON SHIPMENT.JNO = PROJECT.JNO where SUPPLIER.CITY = 'LONDON' and PROJECT.CITY = 'LONDON';
++-----+
+| PNO |
++-----+
+| P6  |
++-----+
+1 row in set (0.02 sec)
+
+
+26)
+mysql> select * from SHIPMENT where QTY is not null;
++-----+-----+-----+-----+
+| SNO | PNO | JNO | QTY |
++-----+-----+-----+-----+
+| S1  | P1  | J1  | 200 |
+| S1  | P1  | J4  | 700 |
+| S2  | P3  | J1  | 400 |
+| S2  | P3  | J2  | 200 |
+| S2  | P3  | J3  | 200 |
+| S2  | P3  | J4  | 500 |
+| S2  | P3  | J5  | 600 |
+| S2  | P3  | J6  | 400 |
+| S2  | P3  | J7  | 800 |
+| S2  | P5  | J2  | 100 |
+| S3  | P3  | J1  | 200 |
+| S3  | P4  | J2  | 500 |
+| S4  | P6  | J3  | 300 |
+| S4  | P6  | J7  | 300 |
+| S5  | P1  | J4  | 100 |
+| S5  | P2  | J2  | 200 |
+| S5  | P2  | J4  | 100 |
+| S5  | P3  | J4  | 200 |
+| S5  | P4  | J4  | 800 |
+| S5  | P5  | J4  | 400 |
+| S5  | P5  | J5  | 500 |
+| S5  | P5  | J7  | 100 |
+| S5  | P6  | J2  | 200 |
+| S5  | P6  | J4  | 500 |
++-----+-----+-----+-----+
+24 rows in set (0.02 sec)
